@@ -1,0 +1,988 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+	<!-- Required meta tags -->
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<link rel="stylesheet" href="../../assets/libs/dropzone/dist/dropzone.css" />
+
+	<link rel="shortcut icon" type="image/x-icon" href="../../assets/images/favicon/favicon.ico" />
+
+	<!-- Libs CSS -->
+	<link rel="preconnect" href="https://fonts.googleapis.com" />
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+	<link rel="stylesheet"
+		href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap" />
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@2.46.0/tabler-icons.min.css" />
+	<link rel="stylesheet" href="../../assets/libs/simplebar/dist/simplebar.min.css" />
+    <link rel="stylesheet" href="../../assets/libs/quill/dist/quill.snow.css" />
+
+	<!-- Theme CSS -->
+	<link rel="stylesheet" href="../../assets/css/theme.min.css">
+
+	<title>Dashboard - Sayur Project</title>
+</head>
+
+<body>
+	<!-- main -->
+	<div>
+		<!-- navbar -->
+		<nav class="navbar navbar-expand-lg navbar-glass">
+			<div class="container-fluid">
+				<div class="flex justify-between items-center w-full">
+					<div class="flex items-center">
+						<a class="text-inherit block xl:hidden mr-3" data-bs-toggle="offcanvas" href="#offcanvasExample"
+							role="button" aria-controls="offcanvasExample">
+							<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor"
+								class="bi bi-text-indent-right" viewBox="0 0 16 16">
+								<path
+									d="M2 3.5a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11a.5.5 0 0 1-.5-.5zm10.646 2.146a.5.5 0 0 1 .708.708L11.707 8l1.647 1.646a.5.5 0 0 1-.708.708l-2-2a.5.5 0 0 1 0-.708l2-2zM2 6.5a.5.5 0 0 1 .5-.5h6a.5.5 0 0 1 0 1h-6a.5.5 0 0 1-.5-.5zm0 3a.5.5 0 0 1 .5-.5h6a.5.5 0 0 1 0 1h-6a.5.5 0 0 1-.5-.5zm0 3a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11a.5.5 0 0 1-.5-.5z" />
+							</svg>
+						</a>
+
+					</div>
+					<div>
+						<ul class="list-unstyled flex items-center gap-2">
+							<li class="dropdown-center">
+								<a class="relative btn text-gray-600 hover:bg-gray-100 hover:text-green-600 h-12 w-12 p-0 rounded-full"
+									href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+									<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+										fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+										stroke-linejoin="round"
+										class="icon icon-tabler icons-tabler-outline icon-tabler-bell">
+										<path stroke="none" d="M0 0h24v24H0z" fill="none" />
+										<path
+											d="M10 5a2 2 0 1 1 4 0a7 7 0 0 1 4 6v3a4 4 0 0 0 2 3h-16a4 4 0 0 0 2 -3v-3a7 7 0 0 1 4 -6" />
+										<path d="M9 17v1a3 3 0 0 0 6 0v-1" />
+									</svg>
+									<span
+										class="absolute -top-2 right-0 translate-middle inline-block text-sm align-baseline bg-red-600 text-white font-semibold rounded-full h-5 w-5 text-center">2</span>
+								</a>
+
+								<div class="dropdown-menu dropdown-menu-end dropdown-menu-lg !p-0 border-0">
+									<div class="border-b p-5 flex justify-between items-center">
+										<div>
+											<h5 class="mb-1">Notifications</h5>
+											<p class="mb-0 small">You have 2 unread messages</p>
+										</div>
+										<a href="#!" class="text-gray-500">
+											<a href="#"
+												class="btn text-gray-600 hover:bg-gray-100 hover:text-green-600 h-10 w-10 p-0 rounded-full"
+												data-bs-toggle="tooltip" data-bs-placement="bottom"
+												data-bs-title="Mark all as read">
+												<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+													viewBox="0 0 24 24" fill="none" stroke="currentColor"
+													stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+													class="icon icon-tabler icons-tabler-outline icon-tabler-checks">
+													<path stroke="none" d="M0 0h24v24H0z" fill="none" />
+													<path d="M7 12l5 5l10 -10" />
+													<path d="M2 12l5 5m5 -5l5 -5" />
+												</svg>
+											</a>
+										</a>
+									</div>
+									<div data-simplebar style="height: 250px">
+										<!-- List group -->
+										<ul class="notification-list-scroll fs-6">
+											<!-- List group item -->
+											<li
+												class="px-5 py-4 hover:bg-gray-100 border-b border-gray-300 bg-gray-100 active">
+												<a href="#!" class="text-gray-500">
+													<div class="flex">
+														<img src="../../assets/images/avatar/avatar-1.jpg" alt=""
+															class="h-10 w-10 rounded-full" />
+														<div class="ms-4">
+															<p class="mb-1">
+																<span class="text-gray-900">Your order is placed</span>
+																waiting for shipping
+															</p>
+															<span class="flex items-center">
+																<svg xmlns="http://www.w3.org/2000/svg" width="12"
+																	height="12" fill="currentColor"
+																	class="bi bi-clock text-gray-500"
+																	viewBox="0 0 16 16">
+																	<path
+																		d="M8 3.5a.5.5 0 0 0-1 0V9a.5.5 0 0 0 .252.434l3.5 2a.5.5 0 0 0 .496-.868L8 8.71V3.5z" />
+																	<path
+																		d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm7-8A7 7 0 1 1 1 8a7 7 0 0 1 14 0z" />
+																</svg>
+																<small class="ms-2">1 minute ago</small>
+															</span>
+														</div>
+													</div>
+												</a>
+											</li>
+											<li class="px-5 py-4 hover:bg-gray-100 border-b border-gray-300">
+												<a href="#!" class="text-gray-500">
+													<div class="flex">
+														<img src="../../assets/images/avatar/avatar-5.jpg" alt=""
+															class="h-10 w-10 rounded-full" />
+														<div class="ms-4">
+															<p class="mb-1">
+																<span class="text-gray-900">Jitu Chauhan</span>
+																answered to your pending order list with notes
+															</p>
+															<span class="flex items-center">
+																<svg xmlns="http://www.w3.org/2000/svg" width="12"
+																	height="12" fill="currentColor"
+																	class="bi bi-clock text-gray-500"
+																	viewBox="0 0 16 16">
+																	<path
+																		d="M8 3.5a.5.5 0 0 0-1 0V9a.5.5 0 0 0 .252.434l3.5 2a.5.5 0 0 0 .496-.868L8 8.71V3.5z" />
+																	<path
+																		d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm7-8A7 7 0 1 1 1 8a7 7 0 0 1 14 0z" />
+																</svg>
+																<small class="ms-2">2 days ago</small>
+															</span>
+														</div>
+													</div>
+												</a>
+											</li>
+											<li class="px-5 py-4 hover:bg-gray-100 border-b border-gray-300">
+												<a href="#!" class="text-gray-500">
+													<div class="flex">
+														<img src="../../assets/images/avatar/avatar-2.jpg" alt=""
+															class="h-10 w-10 rounded-full" />
+														<div class="ms-4">
+															<p class="mb-1">
+																<span class="text-gray-900">You have new messages</span>
+																2 unread messages
+															</p>
+															<span class="flex items-center">
+																<svg xmlns="http://www.w3.org/2000/svg" width="12"
+																	height="12" fill="currentColor"
+																	class="bi bi-clock text-gray-500"
+																	viewBox="0 0 16 16">
+																	<path
+																		d="M8 3.5a.5.5 0 0 0-1 0V9a.5.5 0 0 0 .252.434l3.5 2a.5.5 0 0 0 .496-.868L8 8.71V3.5z" />
+																	<path
+																		d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm7-8A7 7 0 1 1 1 8a7 7 0 0 1 14 0z" />
+																</svg>
+																<small class="ms-2">3 days ago</small>
+															</span>
+														</div>
+													</div>
+												</a>
+											</li>
+										</ul>
+									</div>
+									<div class="px-5 py-4 text-center">
+										<a href="#!">View All</a>
+									</div>
+								</div>
+							</li>
+							<li class="dropdown">
+								<a href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+									<img src="../../assets/images/avatar/avatar-1.jpg" alt=""
+										class="h-12 w-12 rounded-full" />
+								</a>
+
+								<div class="dropdown-menu dropdown-menu-end !p-0">
+									<div class="leading-snug px-5 py-4 border-b border-gray-300">
+										<h5 class="mb-1 text-base">FreshCart Admin</h5>
+										<small>admindemo@email.com</small>
+									</div>
+
+									<ul class="list-unstyled px-2 py-3">
+										<li>
+											<a class="dropdown-item" href="#!">Home</a>
+										</li>
+										<li>
+											<a class="dropdown-item" href="#!">Profile</a>
+										</li>
+
+										<li>
+											<a class="dropdown-item" href="#!">Settings</a>
+										</li>
+									</ul>
+									<div class="border-t px-5 py-3">
+										<a href="#">Log Out</a>
+									</div>
+								</div>
+							</li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</nav>
+
+
+		<div class="main-wrapper">
+			<!-- navbar vertical -->
+			<!-- navbar -->
+			<nav class="navbar-vertical-nav hidden xl:block">
+				<div class="navbar-vertical">
+					<div class="px-4 py-5">
+						<a href="../index.html" class="navbar-brand">
+							<img src="../../assets/images/logo/freshcart-logo.svg" alt="" />
+						</a>
+					</div>
+					<div class="navbar-vertical-content flex-grow-1" data-simplebar="">
+						<ul class="navbar-nav flex-col" id="sideNavbar">
+							<li class="nav-item">
+								<a class="nav-link  active " href="../dashboard/dashboard.html">
+									<div class="flex items-center">
+										<span class="nav-link-icon">
+											<svg
+												xmlns="http://www.w3.org/2000/svg"
+												width="20"
+												height="20"
+												viewBox="0 0 24 24"
+												fill="none"
+												stroke="currentColor"
+												stroke-width="2"
+												stroke-linecap="round"
+												stroke-linejoin="round"
+												class="icon icon-tabler icons-tabler-outline icon-tabler-home"
+											>
+												<path stroke="none" d="M0 0h24v24H0z" fill="none" />
+												<path d="M5 12l-2 0l9 -9l9 9l-2 0" />
+												<path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+												<path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+											</svg>
+										</span>
+										<span class="nav-link-text">Dashboard</span>
+									</div>
+								</a>
+							</li>
+							<li class="nav-item mt-6 mb-3">
+								<span class="nav-label">Store Managements</span>
+							</li>
+							<li class="nav-item">
+								<a class="nav-link " href="../dashboard/products.html">
+									<div class="flex items-center">
+										<span class="nav-link-icon">
+											<svg
+												xmlns="http://www.w3.org/2000/svg"
+												width="20"
+												height="20"
+												viewBox="0 0 24 24"
+												fill="none"
+												stroke="currentColor"
+												stroke-width="2"
+												stroke-linecap="round"
+												stroke-linejoin="round"
+												class="icon icon-tabler icons-tabler-outline icon-tabler-shopping-cart"
+											>
+												<path stroke="none" d="M0 0h24v24H0z" fill="none" />
+												<path d="M6 19m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" />
+												<path d="M17 19m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" />
+												<path d="M17 17h-11v-14h-2" />
+												<path d="M6 5l14 1l-1 7h-13" />
+											</svg>
+										</span>
+										<span class="nav-link-text">Products</span>
+									</div>
+								</a>
+							</li>
+							<li class="nav-item">
+								<a class="nav-link " href="../dashboard/categories.html">
+									<div class="flex items-center">
+										<span class="nav-link-icon">
+											<svg
+												xmlns="http://www.w3.org/2000/svg"
+												width="20"
+												height="20"
+												viewBox="0 0 24 24"
+												fill="none"
+												stroke="currentColor"
+												stroke-width="2"
+												stroke-linecap="round"
+												stroke-linejoin="round"
+												class="icon icon-tabler icons-tabler-outline icon-tabler-list"
+											>
+												<path stroke="none" d="M0 0h24v24H0z" fill="none" />
+												<path d="M9 6l11 0" />
+												<path d="M9 12l11 0" />
+												<path d="M9 18l11 0" />
+												<path d="M5 6l0 .01" />
+												<path d="M5 12l0 .01" />
+												<path d="M5 18l0 .01" />
+											</svg>
+										</span>
+										<span class="nav-link-text">Categories</span>
+									</div>
+								</a>
+							</li>
+							<li class="nav-item">
+								<a
+									class="nav-link"
+									href="../dashboard/order-list.html"
+								>
+									<div class="flex items-center">
+										<span class="nav-link-icon">
+											<svg
+												xmlns="http://www.w3.org/2000/svg"
+												width="20"
+												height="20"
+												viewBox="0 0 24 24"
+												fill="none"
+												stroke="currentColor"
+												stroke-width="2"
+												stroke-linecap="round"
+												stroke-linejoin="round"
+												class="icon icon-tabler icons-tabler-outline icon-tabler-shopping-bag"
+											>
+												<path stroke="none" d="M0 0h24v24H0z" fill="none" />
+												<path d="M6.331 8h11.339a2 2 0 0 1 1.977 2.304l-1.255 8.152a3 3 0 0 1 -2.966 2.544h-6.852a3 3 0 0 1 -2.965 -2.544l-1.255 -8.152a2 2 0 0 1 1.977 -2.304z" />
+												<path d="M9 11v-5a3 3 0 0 1 6 0v5" />
+											</svg>
+										</span>
+										<span class="nav-link-text">Orders</span>
+									</div>
+								</a>
+							</li>
+
+							<li class="nav-item">
+								<a
+									class="nav-link  collapsed "
+									href="../dashboard/customers.html"
+								>
+									<div class="flex items-center">
+										<span class="nav-link-icon">
+											<svg
+												xmlns="http://www.w3.org/2000/svg"
+												width="20"
+												height="20"
+												viewBox="0 0 24 24"
+												fill="none"
+												stroke="currentColor"
+												stroke-width="2"
+												stroke-linecap="round"
+												stroke-linejoin="round"
+												class="icon icon-tabler icons-tabler-outline icon-tabler-users"
+											>
+												<path stroke="none" d="M0 0h24v24H0z" fill="none" />
+												<path d="M9 7m-4 0a4 4 0 1 0 8 0a4 4 0 1 0 -8 0" />
+												<path d="M3 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+												<path d="M16 3.13a4 4 0 0 1 0 7.75" />
+												<path d="M21 21v-2a4 4 0 0 0 -3 -3.85" />
+											</svg>
+										</span>
+										<span class="nav-link-text">Customers</span>
+									</div>
+								</a>
+							</li>
+
+							<li class="nav-item mt-6 mb-3">
+								<span class="nav-label">Site Settings</span>
+							</li>
+							<li class="nav-item">
+								<a class="nav-link  collapsed " href="#">
+									<div class="flex items-center">
+										<span class="nav-link-icon">
+											<svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-user-cog"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M8 7a4 4 0 1 0 8 0a4 4 0 0 0 -8 0" /><path d="M6 21v-2a4 4 0 0 1 4 -4h2.5" /><path d="M19.001 19m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" /><path d="M19.001 15.5v1.5" /><path d="M19.001 21v1.5" /><path d="M22.032 17.25l-1.299 .75" /><path d="M17.27 20l-1.3 .75" /><path d="M15.97 17.25l1.3 .75" /><path d="M20.733 20l1.3 .75" /></svg>
+										</span>
+										<span class="nav-link-text">Role</span>
+									</div>
+								</a>
+							</li>
+
+						</ul>
+					</div>
+				</div>
+			</nav>
+
+			<nav class="navbar-vertical-nav offcanvas offcanvas-left navbar-offcanvac" tabindex="-1" id="offcanvasExample">
+				<div class="navbar-vertical">
+					<div class="px-4 py-5 flex justify-between items-center">
+						<a href="../index.html" class="navbar-brand">
+							<img src="../../assets/images/logo/freshcart-logo.svg" alt="" />
+						</a>
+						<button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+					</div>
+					<div class="navbar-vertical-content flex-grow-1" data-simplebar="">
+						<ul class="navbar-nav flex-col">
+							<li class="nav-item">
+								<a class="nav-link  active " href="../dashboard/dashboard.html">
+									<div class="flex items-center">
+										<span class="nav-link-icon">
+											<svg
+												xmlns="http://www.w3.org/2000/svg"
+												width="20"
+												height="20"
+												viewBox="0 0 24 24"
+												fill="none"
+												stroke="currentColor"
+												stroke-width="2"
+												stroke-linecap="round"
+												stroke-linejoin="round"
+												class="icon icon-tabler icons-tabler-outline icon-tabler-home"
+											>
+												<path stroke="none" d="M0 0h24v24H0z" fill="none" />
+												<path d="M5 12l-2 0l9 -9l9 9l-2 0" />
+												<path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+												<path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+											</svg>
+										</span>
+										<span class="nav-link-text">Dashboard</span>
+									</div>
+								</a>
+							</li>
+							<li class="nav-item mt-6 mb-3">
+								<span class="nav-label">Store Managements</span>
+							</li>
+							<li class="nav-item">
+								<a class="nav-link " href="../dashboard/products.html">
+									<div class="flex items-center">
+										<span class="nav-link-icon">
+											<svg
+												xmlns="http://www.w3.org/2000/svg"
+												width="20"
+												height="20"
+												viewBox="0 0 24 24"
+												fill="none"
+												stroke="currentColor"
+												stroke-width="2"
+												stroke-linecap="round"
+												stroke-linejoin="round"
+												class="icon icon-tabler icons-tabler-outline icon-tabler-shopping-cart"
+											>
+												<path stroke="none" d="M0 0h24v24H0z" fill="none" />
+												<path d="M6 19m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" />
+												<path d="M17 19m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" />
+												<path d="M17 17h-11v-14h-2" />
+												<path d="M6 5l14 1l-1 7h-13" />
+											</svg>
+										</span>
+										<span class="nav-link-text">Products</span>
+									</div>
+								</a>
+							</li>
+							<li class="nav-item">
+								<a class="nav-link " href="../dashboard/categories.html">
+									<div class="flex items-center">
+										<span class="nav-link-icon">
+											<svg
+												xmlns="http://www.w3.org/2000/svg"
+												width="20"
+												height="20"
+												viewBox="0 0 24 24"
+												fill="none"
+												stroke="currentColor"
+												stroke-width="2"
+												stroke-linecap="round"
+												stroke-linejoin="round"
+												class="icon icon-tabler icons-tabler-outline icon-tabler-list"
+											>
+												<path stroke="none" d="M0 0h24v24H0z" fill="none" />
+												<path d="M9 6l11 0" />
+												<path d="M9 12l11 0" />
+												<path d="M9 18l11 0" />
+												<path d="M5 6l0 .01" />
+												<path d="M5 12l0 .01" />
+												<path d="M5 18l0 .01" />
+											</svg>
+										</span>
+										<span class="nav-link-text">Categories</span>
+									</div>
+								</a>
+							</li>
+							<li class="nav-item">
+								<a
+									class="nav-link"
+									href="../dashboard/order-list.html"
+								>
+									<div class="flex items-center">
+										<span class="nav-link-icon">
+											<svg
+												xmlns="http://www.w3.org/2000/svg"
+												width="20"
+												height="20"
+												viewBox="0 0 24 24"
+												fill="none"
+												stroke="currentColor"
+												stroke-width="2"
+												stroke-linecap="round"
+												stroke-linejoin="round"
+												class="icon icon-tabler icons-tabler-outline icon-tabler-shopping-bag"
+											>
+												<path stroke="none" d="M0 0h24v24H0z" fill="none" />
+												<path d="M6.331 8h11.339a2 2 0 0 1 1.977 2.304l-1.255 8.152a3 3 0 0 1 -2.966 2.544h-6.852a3 3 0 0 1 -2.965 -2.544l-1.255 -8.152a2 2 0 0 1 1.977 -2.304z" />
+												<path d="M9 11v-5a3 3 0 0 1 6 0v5" />
+											</svg>
+										</span>
+										<span class="nav-link-text">Orders</span>
+									</div>
+								</a>
+							</li>
+							<li class="nav-item">
+								<a
+									class="nav-link  collapsed "
+									href="../dashboard/customers.html"
+								>
+									<div class="flex items-center">
+										<span class="nav-link-icon">
+											<svg
+												xmlns="http://www.w3.org/2000/svg"
+												width="20"
+												height="20"
+												viewBox="0 0 24 24"
+												fill="none"
+												stroke="currentColor"
+												stroke-width="2"
+												stroke-linecap="round"
+												stroke-linejoin="round"
+												class="icon icon-tabler icons-tabler-outline icon-tabler-users"
+											>
+												<path stroke="none" d="M0 0h24v24H0z" fill="none" />
+												<path d="M9 7m-4 0a4 4 0 1 0 8 0a4 4 0 1 0 -8 0" />
+												<path d="M3 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+												<path d="M16 3.13a4 4 0 0 1 0 7.75" />
+												<path d="M21 21v-2a4 4 0 0 0 -3 -3.85" />
+											</svg>
+										</span>
+										<span class="nav-link-text">Customers</span>
+									</div>
+								</a>
+							</li>
+
+							<li class="nav-item mt-6 mb-3">
+								<span class="nav-label">Site Settings</span>
+							</li>
+							<li class="nav-item">
+								<a class="nav-link  collapsed " href="#" data-bs-toggle="collapse" data-bs-target="#navBlog" aria-expanded="false" aria-controls="navBlog">
+									<div class="flex items-center">
+										<span class="nav-link-icon">
+											<svg
+												xmlns="http://www.w3.org/2000/svg"
+												width="20"
+												height="20"
+												viewBox="0 0 24 24"
+												fill="none"
+												stroke="currentColor"
+												stroke-width="2"
+												stroke-linecap="round"
+												stroke-linejoin="round"
+												class="icon icon-tabler icons-tabler-outline icon-tabler-news"
+											>
+												<path stroke="none" d="M0 0h24v24H0z" fill="none" />
+												<path d="M16 6h3a1 1 0 0 1 1 1v11a2 2 0 0 1 -4 0v-13a1 1 0 0 0 -1 -1h-10a1 1 0 0 0 -1 1v12a3 3 0 0 0 3 3h11" />
+												<path d="M8 8l4 0" />
+												<path d="M8 12l4 0" />
+												<path d="M8 16l4 0" />
+											</svg>
+										</span>
+										<span class="nav-link-text">Role</span>
+									</div>
+								</a>
+							</li>
+						</ul>
+					</div>
+				</div>
+			</nav>
+
+			<!-- main -->
+			<main class="main-content-wrapper">
+				<div class="container">
+					<div class="grid grid-cols-1 mb-8">
+						<!-- page header -->
+						<div class="md:flex justify-between items-center">
+							<div>
+								<h2 class="text-xl">Add New Product</h2>
+								<!-- breacrumb -->
+								<nav aria-label="breadcrumb">
+									<ol class="flex flex-wrap">
+										<li class="inline-block text-green-600">
+											<a href="../dashboard/dashboard.html">
+												Dashboard
+												<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14"
+													viewBox="0 0 24 24" fill="none" stroke="currentColor"
+													stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+													class="icon icon-tabler icons-tabler-outline icon-tabler-slash inline-block mx-2">
+													<path stroke="none" d="M0 0h24v24H0z" fill="none" />
+													<path d="M17 5l-10 14" />
+												</svg>
+											</a>
+										</li>
+                                        <li class="inline-block text-green-600">
+                                            <a href="../dashboard/products.html">
+                                                Products
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14"
+													viewBox="0 0 24 24" fill="none" stroke="currentColor"
+													stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+													class="icon icon-tabler icons-tabler-outline icon-tabler-slash inline-block mx-2">
+													<path stroke="none" d="M0 0h24v24H0z" fill="none" />
+													<path d="M17 5l-10 14" />
+												</svg>
+                                            </a>
+                                        </li>
+
+										<li class="inline-block text-gray-500 active" aria-current="page">Add New Product</li>
+									</ol>
+								</nav>
+							</div>
+							<!-- button -->
+                            <div>
+                                <a href="../dashboard/products.html" class="btn inline-flex items-center gap-x-2 bg-gray-300 text-black border-gray-300 disabled:opacity-50 disabled:pointer-events-none hover:text-white hover:bg-gray-700 hover:border-gray-700 active:bg-gray-700 active:border-gray-700 focus:outline-none focus:ring-4 focus:ring-gray-100">Back to Product</a>
+                            </div>
+						</div>
+					</div>
+					<!-- row -->
+					<div class="grid mb-5">
+						<div class="card card-lg border-0 row-span-4 col-span-2 ">
+							<div class="card-body flex flex-col gap-8 p-7">
+								<div class="flex flex-col gap-4">
+									<h3 class="mb-0 text-md">Product Information</h3>
+									<form class="grid grid-cols-12 gap-6 needs-validation" novalidate>
+										<div class="lg:col-span-6 col-span-12">
+											<div>
+												<label for="creatCustomerName"
+													class="inline-block text-gray-800 font-medium mb-2">
+													Product Name
+													<span class="text-red-600">*</span>
+												</label>
+												<input type="text"
+													class="border border-gray-300 text-gray-900 rounded-lg focus:shadow-[0_0_0_.25rem_rgba(10,173,10,.25)] focus:ring-green-600 focus:ring-0 focus:border-green-600 block p-2 px-3 disabled:opacity-50 disabled:pointer-events-none w-full text-base"
+													id="creatCustomerName" placeholder="Customer Name" required />
+												<div class="invalid-feedback">Please enter product name</div>
+											</div>
+										</div>
+										<div class="lg:col-span-6 col-span-12">
+											<div>
+												<label class="inline-block text-gray-800 font-medium mb-2" for="selectOne">Product Category
+                                                    <span class="text-red-600">*</span>
+                                                </label>
+                                                <select class="border border-gray-300 text-gray-900 rounded-lg focus:shadow-[0_0_0_.25rem_rgba(10,173,10,.25)] focus:ring-green-600 focus:ring-0 focus:border-green-600 block p-2 px-3 disabled:opacity-50 disabled:pointer-events-none w-full text-base" aria-label="Default select example">
+                                                    <option selected>Open this select menu</option>
+                                                    <option value="1">One</option>
+                                                    <option value="2">Two</option>
+                                                    <option value="3">Three</option>
+                                                </select>
+											</div>
+										</div>
+                                        <div class="lg:col-span-6 col-span-12">
+											<div>
+												<label for="creatCustomerName"
+													class="inline-block text-gray-800 font-medium mb-2">
+													Unit
+													<span class="text-red-600">*</span>
+												</label>
+												<select class="border border-gray-300 text-gray-900 rounded-lg focus:shadow-[0_0_0_.25rem_rgba(10,173,10,.25)] focus:ring-green-600 focus:ring-0 focus:border-green-600 block p-2 px-3 disabled:opacity-50 disabled:pointer-events-none w-full text-base" aria-label="Default select example">
+                                                    <option selected>Open this select unit</option>
+                                                    <option value="gram">Gr</option>
+                                                    <option value="kilo">Kg</option>
+                                                </select>
+											</div>
+										</div>
+										<div class="lg:col-span-12 col-span-12">
+											<div>
+												<h3 class="mb-0 text-md">Product descriptions</h3>
+                                                <div id="editor"></div>
+											</div>
+										</div>
+                                        <div class="lg:col-span-6 col-span-12">
+											<div>
+												<label for="creatCustomerName"
+													class="inline-block text-gray-800 font-medium mb-2">
+													Product Status
+													<span class="text-red-600">*</span>
+												</label>
+												<select class="border border-gray-300 text-gray-900 rounded-lg focus:shadow-[0_0_0_.25rem_rgba(10,173,10,.25)] focus:ring-green-600 focus:ring-0 focus:border-green-600 block p-2 px-3 disabled:opacity-50 disabled:pointer-events-none w-full text-base" aria-label="Default select example">
+                                                    <option selected>Open this select status</option>
+                                                    <option value="DRAFT">Draft</option>
+                                                    <option value="ACTIVE">Active</option>
+													<option value="INACTIVE">In Active</option>
+                                                </select>
+											</div>
+										</div>
+
+										<div class="col-span-12 mt-3">
+											<div class="flex flex-col md:flex-row gap-2">
+												<button
+													class="btn inline-flex items-center gap-x-2 bg-green-600 text-white border-green-600 disabled:opacity-50 disabled:pointer-events-none hover:text-white hover:bg-green-700 hover:border-green-700 active:bg-green-700 active:border-green-700 focus:outline-none focus:ring-4 focus:ring-green-100"
+													type="submit">
+													Create New Product
+												</button>
+												<a href="../dashboard/categories.html"
+													class="btn inline-flex items-center gap-x-2 bg-gray-200 text-gray-800 border-gray-200 border disabled:opacity-50 disabled:pointer-events-none hover:text-white hover:bg-gray-700 hover:border-gray-700 active:bg-gray-700 active:border-gray-700 focus:outline-none focus:ring-4 focus:ring-gray-300"
+													type="submit">
+													Cancel
+												</a>
+											</div>
+										</div>
+									</form>
+								</div>
+							</div>
+						</div>
+					</div>
+					<!-- TABLE VARIANT -->
+					<div class="card h-full card-lg">
+						<div class="p-6">
+							<div class="flex justify-between flex-row items-center">
+								<div>
+									<h3 class=" text-md">Variant</h3>
+								</div>
+								<div>
+									<button type="button"
+										class="btn inline-flex items-center gap-x-2 bg-cyan-600 text-white border-cyan-600 disabled:opacity-50 disabled:pointer-events-none hover:text-white hover:bg-cyan-700 hover:border-cyan-700 active:bg-cyan-700 active:border-cyan-700 focus:outline-none focus:ring-4 focus:ring-cyan-100"
+										data-bs-toggle="modal" data-bs-target="#variantModal">
+										Add Variant
+										<svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-plus"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 5l0 14" /><path d="M5 12l14 0" /></svg>
+									</button>
+								</div>
+							</div>
+						</div>
+						<div class="card-body p-0">
+							<div class="relative overflow-x-auto">
+								<table class="text-left w-full whitespace-nowrap table-with-checkbox">
+									<thead class="bg-gray-200 text-gray-700">
+										<tr class="border-transparent !border-b-0">
+											<th scope="col" class="px-6 py-3">
+												<div class="flex items-center">
+													<input
+														class="w-4 h-4 text-green-600 bg-white border-gray-300 rounded focus:ring-green-600 focus:outline-none focus:ring-2"
+														type="checkbox" value="" id="checkAll" />
+													<label class="text-gray-800 ms-3"
+														for="checkAll"></label>
+												</div>
+											</th>
+											<th scope="col" class="px-6 py-3">Stock</th>
+											<th scope="col" class="px-6 py-3">Weight</th>
+											<th scope="col" class="px-6 py-3">Reguler Price</th>
+											<th scope="col" class="px-6 py-3">Sale Price</th>
+											<th scope="col" class="px-6 py-3">Product Image</th>
+
+											<th scope="col" class="px-6 py-3">
+												Action
+											</th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr class="border-transparent !border-b-0">
+											<td class="py-3 px-6 text-left">
+												<div class="flex items-center">
+													<input
+														class="w-4 h-4 text-green-600 bg-white border-gray-300 rounded focus:ring-green-600 focus:outline-none focus:ring-2"
+														type="checkbox" value="" id="addressTwo" />
+													<label class="text-gray-800 ms-3"
+														for="addressTwo"></label>
+												</div>
+											</td>
+
+											<td class="py-3 px-6 text-left">100</td>
+
+											<td class="py-3 px-6 text-left">250</td>
+											<td class="py-3 px-6 text-left">Rp 12.000</td>
+											<td class="py-3 px-6 text-left">Rp 10.000</td>
+											<td class="py-3 px-6 text-left">
+												<img src="../../assets/images/icons/bakery.svg" alt="">
+											</td>
+											<td class="py-3 px-6 text-left">
+												<div class="dropdown">
+													<a href="#" class="text-inherit"
+														data-bs-toggle="dropdown" aria-expanded="false">
+														<svg xmlns="http://www.w3.org/2000/svg"
+															width="20" height="20" viewBox="0 0 24 24"
+															fill="none" stroke="currentColor"
+															stroke-width="2" stroke-linecap="round"
+															stroke-linejoin="round"
+															class="icon icon-tabler icons-tabler-outline icon-tabler-dots-vertical">
+															<path stroke="none" d="M0 0h24v24H0z"
+																fill="none" />
+															<path
+																d="M12 12m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" />
+															<path
+																d="M12 19m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" />
+															<path
+																d="M12 5m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" />
+														</svg>
+													</a>
+													<ul class="dropdown-menu">
+														<li>
+															<a class="dropdown-item" href="#">
+																<svg xmlns="http://www.w3.org/2000/svg"
+																	width="14" height="14"
+																	viewBox="0 0 24 24" fill="none"
+																	stroke="currentColor"
+																	stroke-width="2"
+																	stroke-linecap="round"
+																	stroke-linejoin="round"
+																	class="icon icon-tabler icons-tabler-outline icon-tabler-trash">
+																	<path stroke="none"
+																		d="M0 0h24v24H0z" fill="none" />
+																	<path d="M4 7l16 0" />
+																	<path d="M10 11l0 6" />
+																	<path d="M14 11l0 6" />
+																	<path
+																		d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12" />
+																	<path
+																		d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3" />
+																</svg>
+																Delete
+															</a>
+														</li>
+														<li>
+															<a class="dropdown-item" href="#">
+																<svg xmlns="http://www.w3.org/2000/svg"
+																	width="14" height="14"
+																	viewBox="0 0 24 24" fill="none"
+																	stroke="currentColor"
+																	stroke-width="2"
+																	stroke-linecap="round"
+																	stroke-linejoin="round"
+																	class="icon icon-tabler icons-tabler-outline icon-tabler-edit">
+																	<path stroke="none"
+																		d="M0 0h24v24H0z" fill="none" />
+																	<path
+																		d="M7 7h-1a2 2 0 0 0 -2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2 -2v-1" />
+																	<path
+																		d="M20.385 6.585a2.1 2.1 0 0 0 -2.97 -2.97l-8.415 8.385v3h3l8.385 -8.415z" />
+																	<path d="M16 5l3 3" />
+																</svg>
+																Edit
+															</a>
+														</li>
+													</ul>
+												</div>
+											</td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+
+							<div
+								class="border-t border-gray-300 flex flex-col md:flex-row justify-between items-center px-6 py-6 gap-3">
+								<span>Showing 1 to 8 of 12 entries</span>
+								<nav class="flex items-center gap-x-1">
+									<button type="button"
+										class="leading-none min-h-[36px] min-w-[36px] py-2 px-2.5 inline-flex justify-center items-center gap-x-1.5 rounded-md border bg-white border-gray-300 text-gray-800 hover:bg-gray-300 focus:outline-none focus:bg-gray-300 disabled:opacity-50 disabled:pointer-events-none"
+										disabled="">
+										Previous
+									</button>
+									<div class="flex items-center gap-x-1">
+										<button type="button"
+											class="leading-none min-h-[36px] min-w-[36px] py-2 px-2.5 inline-flex justify-center items-center gap-x-1.5 rounded-md border bg-white border-gray-300 text-gray-800 hover:bg-gray-300 focus:outline-none focus:bg-gray-300 disabled:opacity-50 disabled:pointer-events-none"
+											aria-current="page">
+											1
+										</button>
+										<button type="button"
+											class="leading-none min-h-[36px] min-w-[36px] py-2 px-2.5 inline-flex justify-center items-center gap-x-1.5 rounded-md text-white border bg-green-600 border-green-600 hover:bg-green-600 focus:outline-none focus:bg-green-600 disabled:opacity-50 disabled:pointer-events-none">
+											2
+										</button>
+										<button type="button"
+											class="leading-none min-h-[36px] min-w-[36px] py-2 px-2.5 inline-flex justify-center items-center gap-x-1.5 rounded-md border bg-white border-gray-300 text-gray-800 hover:bg-gray-300 focus:outline-none focus:bg-gray-300 disabled:opacity-50 disabled:pointer-events-none">
+											3
+										</button>
+									</div>
+									<button type="button"
+										class="leading-none min-h-[36px] min-w-[36px] py-2 px-2.5 inline-flex justify-center items-center gap-x-1.5 rounded-md border bg-white border-gray-300 text-gray-800 hover:bg-gray-300 focus:outline-none focus:bg-gray-300 disabled:opacity-50 disabled:pointer-events-none">
+										Next
+									</button>
+								</nav>
+							</div>
+						</div>
+					</div>
+				</div>
+			</main>
+			<!-- Modal -->
+			<div class="modal fade" id="variantModal" tabindex="-1" aria-labelledby="variantModalLabel" aria-hidden="true">
+				<div class="modal-dialog modal-lg modal-dialog-centered">
+					<div class="modal-content p-6 flex flex-col gap-6">
+						<div class="flex flex-row items-center justify-between">
+							<h5 class="modal-title" id="addressLabel">Add Variant</h5>
+							<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+								<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-x text-gray-700"
+									width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
+									fill="none" stroke-linecap="round" stroke-linejoin="round">
+									<path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+									<path d="M18 6l-12 12"></path>
+									<path d="M6 6l12 12"></path>
+								</svg>
+							</button>
+						</div>
+						<div class="modal-body p-0">
+							<form class="grid grid-cols-12 needs-validation gap-3" novalidate>
+								<div class="lg:col-span-6 col-span-12">
+									<!-- input -->
+									<label for="customerEditAdd"
+										class="inline-block text-gray-800 font-medium mb-2">Stock
+										<span class="text-red-600">*</span>
+									</label>
+									<input type="number"
+										class="border border-gray-300 text-gray-900 rounded-lg focus:shadow-[0_0_0_.25rem_rgba(10,173,10,.25)] focus:ring-green-600 focus:ring-0 focus:border-green-600 block p-2 px-3 disabled:opacity-50 disabled:pointer-events-none w-full text-base"
+										id="customerEditAdd" placeholder="10" required />
+									<div class="invalid-feedback">Please enter stock</div>
+								</div>
+		
+								<div class="lg:col-span-6 col-span-12">
+									<!-- input -->
+									<label for="customerZip" class="inline-block text-gray-800 font-medium mb-2">Weight</label>
+									<input type="number"
+										class="border border-gray-300 text-gray-900 rounded-lg focus:shadow-[0_0_0_.25rem_rgba(10,173,10,.25)] focus:ring-green-600 focus:ring-0 focus:border-green-600 block p-2 px-3 disabled:opacity-50 disabled:pointer-events-none w-full text-base"
+										id="customerZip" placeholder="100" required />
+									<div class="invalid-feedback">Please enter weigh</div>
+								</div>
+		
+								<div class="lg:col-span-6 col-span-12">
+									<!-- input -->
+									<label for="customerCity" class="inline-block text-gray-800 font-medium mb-2">Reguler Price</label>
+									<input type="number"
+										class="border border-gray-300 text-gray-900 rounded-lg focus:shadow-[0_0_0_.25rem_rgba(10,173,10,.25)] focus:ring-green-600 focus:ring-0 focus:border-green-600 block p-2 px-3 disabled:opacity-50 disabled:pointer-events-none w-full text-base"
+										id="customerCity" placeholder="10000" required />
+									<div class="invalid-feedback">Please enter reguler price</div>
+								</div>
+								<div class="lg:col-span-6 col-span-12">
+									<!-- input -->
+									<label for="customerCity" class="inline-block text-gray-800 font-medium mb-2">Sale Price</label>
+									<input type="text"
+										class="border border-gray-300 text-gray-900 rounded-lg focus:shadow-[0_0_0_.25rem_rgba(10,173,10,.25)] focus:ring-green-600 focus:ring-0 focus:border-green-600 block p-2 px-3 disabled:opacity-50 disabled:pointer-events-none w-full text-base"
+										id="customerState" placeholder="9000" required />
+									<div class="invalid-feedback">Please enter sale price</div>
+								</div>
+								<div class="lg:col-span-8 col-span-12">
+									<label for="customerCountry"
+										class="inline-block text-gray-800 font-medium mb-2">Image Product</label>
+									<div class="dropzone mt-4 border-dashed rounded-2 min-h-0 dz-clickable" id="my-dropzone">
+										<div class="dz-default dz-message">
+											<button class="dz-button" type="button">Drop file here to upload</button>
+										</div>
+									</div>
+									<div class="invalid-feedback">Please select a valid state.</div>
+								</div>
+							</form>
+						</div>
+						<div class="flex flex-row gap-3">
+							<button type="button"
+								class="btn inline-flex items-center gap-x-2 bg-green-600 text-white border-green-600 disabled:opacity-50 disabled:pointer-events-none hover:text-white hover:bg-green-700 hover:border-green-700 active:bg-green-700 active:border-green-700 focus:outline-none focus:ring-4 focus:ring-green-100">Add</button>
+							<button type="button"
+								class="btn inline-flex items-center gap-x-2 bg-gray-200 text-gray-800 border-gray-200 border disabled:opacity-50 disabled:pointer-events-none hover:text-white hover:bg-gray-700 hover:border-gray-700 active:bg-gray-700 active:border-gray-700 focus:outline-none focus:ring-4 focus:ring-gray-300"
+								data-bs-dismiss="modal">Cancel</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<script src="../../assets/libs/flatpickr/dist/flatpickr.min.js"></script>
+	<!-- Libs JS -->
+	<script src="../../assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+	<script src="../../assets/libs/simplebar/dist/simplebar.min.js"></script>
+
+	<!-- Theme JS -->
+
+	<script src="../../assets/js/theme.min.js"></script>
+    <script src="../../assets/libs/quill/dist/quill.js"></script>
+    <script src="../../assets/js/vendors/editor.js"></script>
+    <script src="../../assets/libs/dropzone/dist/min/dropzone.min.js"></script>
+    <script src="../../assets/js/vendors/dropzone.js"></script>
+
+	<script src="../../assets/js/vendors/validation.js"></script>
+    <script>
+        const quill = new Quill('#editor', {
+            modules: {
+                toolbar: [
+                    [{ header: [1, 2, false] }],
+                    ['bold', 'italic', 'underline'],
+                    ['image', 'code-block'],
+                    [{ list: 'ordered' }, { list: 'bullet' }],
+                ],
+            },
+            placeholder: 'Compose an epic...',
+            theme: 'snow', // or 'bubble'
+        });
+    </script>
+</body>
+
+</html>
