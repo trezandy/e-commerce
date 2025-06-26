@@ -1,0 +1,246 @@
+<div>
+    <main>
+        <div class="mt-4">
+            <div class="container">
+                <div class="flex flex-wrap">
+                    <div class="w-full">
+                        <nav aria-label="breadcrumb">
+                            <ol class="flex flex-wrap">
+                                <li class="inline-block text-green-600 mr-2">
+                                    <a href="{{ route('home') }}">Home<svg xmlns="http://www.w3.org/2000/svg"
+                                            class="icon icon-tabler icon-tabler-chevron-right inline-block" width="14"
+                                            height="14" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
+                                            fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                            <path d="M9 6l6 6l-6 6" />
+                                        </svg></a>
+                                </li>
+                                <li class="inline-block text-green-600 mr-2">
+                                    <a href="{{ route('cart.index') }}">Shop Cart<svg xmlns="http://www.w3.org/2000/svg"
+                                            class="icon icon-tabler icon-tabler-chevron-right inline-block" width="14"
+                                            height="14" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
+                                            fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                            <path d="M9 6l6 6l-6 6" />
+                                        </svg></a>
+                                </li>
+                                <li class="inline-block text-gray-500 active" aria-current="page">Shop Checkout</li>
+                            </ol>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="my-10">
+            <div class="container">
+                <div class="flex flex-wrap">
+                    <div class="w-full mb-6">
+                        <h1 class="text-xl">Checkout</h1>
+                        <p>Sudah memiliki akun? Klik di sini untuk <a href="#" class="text-green-600">Masuk</a></p>
+                    </div>
+                </div>
+
+                <form wire:submit.prevent="placeOrder">
+                    <div class="flex flex-wrap lg:flex-nowrap gap-10">
+                        {{-- Kolom Kiri: Accordion --}}
+                        <div class="lg:w-3/5 md:w-full">
+                            <div class="accordion accordion-flush" id="accordionFlushExample">
+
+                                {{-- Item 1: Alamat Pengiriman --}}
+                                <div class="border-b border-gray-300 py-4">
+                                    <a href="#"
+                                        class="flex flex-row gap-2 items-center text-gray-900 text-md font-bold collapsed"
+                                        data-bs-toggle="collapse" data-bs-target="#flush-collapseOne"
+                                        aria-expanded="true" aria-controls="flush-collapseOne">
+                                        <svg xmlns="http://www.w3.org/2000/svg"
+                                            class="icon icon-tabler icon-tabler-map-pin inline-block text-gray-500"
+                                            width="20" height="20" viewBox="0 0 24 24" stroke-width="1.5"
+                                            stroke="currentColor" fill="none" stroke-linecap="round"
+                                            stroke-linejoin="round">
+                                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                            <path d="M9 11a3 3 0 1 0 6 0a3 3 0 0 0 -6 0" />
+                                            <path
+                                                d="M17.657 16.657l-4.243 4.243a2 2 0 0 1 -2.827 0l-4.244 -4.243a8 8 0 1 1 11.314 0z" />
+                                        </svg>
+                                        Alamat Pengiriman
+                                    </a>
+                                    <div id="flush-collapseOne" class="accordion-collapse collapse show"
+                                        data-bs-parent="#accordionFlushExample">
+                                        <div class="my-6">
+                                            {{-- Nanti, di sini kita bisa buat logic untuk memilih alamat atau menambah
+                                            alamat baru --}}
+                                            <div class="card card-body flex-col gap-4">
+                                                <div class="relative flex items-center gap-2">
+                                                    <input class="w-4 h-4 text-green-600" type="radio"
+                                                        name="flexRadioDefault" id="homeRadio" checked />
+                                                    <label class="text-gray-800 inline-block"
+                                                        for="homeRadio">Home</label>
+                                                </div>
+                                                <address class="not-italic">
+                                                    <strong>Jitu Chauhan</strong><br />
+                                                    4450 North Avenue Oakland,<br />
+                                                    Nebraska, United States,<br />
+                                                    <abbr title="Phone">P: 402-776-1106</abbr>
+                                                </address>
+                                                <span class="text-red-600">Default address</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                {{-- Item 2: Instruksi Pengiriman --}}
+                                <div class="border-b border-gray-300 py-4">
+                                    <a href="#" class="flex flex-row gap-2 items-center text-gray-900 text-md font-bold"
+                                        data-bs-toggle="collapse" data-bs-target="#flush-collapseThree"
+                                        aria-expanded="false" aria-controls="flush-collapseThree">
+                                        <svg xmlns="http://www.w3.org/2000/svg"
+                                            class="icon icon-tabler icon-tabler-shopping-bag inline-block text-gray-500"
+                                            width="20" height="20" viewBox="0 0 24 24" stroke-width="1.5"
+                                            stroke="currentColor" fill="none" stroke-linecap="round"
+                                            stroke-linejoin="round">
+                                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                            <path
+                                                d="M6.331 8h11.339a2 2 0 0 1 1.977 2.304l-1.255 8.152a3 3 0 0 1 -2.966 2.544h-6.852a3 3 0 0 1 -2.965 -2.544l-1.255 -8.152a2 2 0 0 1 1.977 -2.304z" />
+                                            <path d="M9 11v-5a3 3 0 0 1 6 0v5" />
+                                        </svg>
+                                        Catatan Pengiriman
+                                    </a>
+                                    <div id="flush-collapseThree" class="accordion-collapse collapse"
+                                        data-bs-parent="#accordionFlushExample">
+                                        <div class="my-6">
+                                            <textarea wire:model.defer="delivery_instructions"
+                                                class="border border-gray-300 text-gray-900 rounded-lg w-full text-base"
+                                                rows="3" placeholder="Tulis instruksi pengiriman di sini"></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                {{-- Item 3: Metode Pembayaran --}}
+                                <div class="py-4">
+                                    <a href="#" class="flex flex-row gap-2 items-center text-gray-900 text-md font-bold"
+                                        data-bs-toggle="collapse" data-bs-target="#flush-collapseFour"
+                                        aria-expanded="false" aria-controls="flush-collapseFour">
+                                        <svg xmlns="http://www.w3.org/2000/svg"
+                                            class="icon icon-tabler icon-tabler-credit-card inline-block text-gray-500"
+                                            width="20" height="20" viewBox="0 0 24 24" stroke-width="1.5"
+                                            stroke="currentColor" fill="none" stroke-linecap="round"
+                                            stroke-linejoin="round">
+                                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                            <path
+                                                d="M3 5m0 3a3 3 0 0 1 3 -3h12a3 3 0 0 1 3 3v8a3 3 0 0 1 -3 3h-12a3 3 0 0 1 -3 -3z" />
+                                            <path d="M3 10l18 0" />
+                                            <path d="M7 15l.01 0" />
+                                            <path d="M11 15l2 0" />
+                                        </svg>
+                                        Metode Pembayaran
+                                    </a>
+                                    <div id="flush-collapseFour" class="accordion-collapse collapse"
+                                        data-bs-parent="#accordionFlushExample">
+                                        <div class="mt-6 flex flex-col gap-4">
+                                            <div class="card p-6">
+                                                <div class="flex gap-3">
+                                                    <input wire:model.defer="payment_method" value="cod"
+                                                        class="w-4 h-4 text-green-600" type="radio"
+                                                        name="payment_method_radio" id="cashonDelivery" />
+                                                    <div class="flex flex-col gap-1">
+                                                        <h5 class="text-base">Cash on Delivery</h5>
+                                                        <p class="text-sm">Bayar saat pesanan Anda tiba.</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="card p-6">
+                                                <div class="flex gap-3">
+                                                    <input wire:model.defer="payment_method" value="bca"
+                                                        class="w-4 h-4 text-green-600" type="radio"
+                                                        name="payment_method_radio" id="bcaTransfer" />
+                                                    <div class="flex flex-col gap-1">
+                                                        <h5 class="text-base">Transfer Bank BCA</h5>
+                                                        <p class="text-sm">Anda akan menerima nomor rekening setelah
+                                                            membuat pesanan.</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            @error('payment_method') <span class="text-red-500 text-sm">{{ $message
+                                                }}</span> @enderror
+                                            <div class="flex justify-end">
+                                                <button type="submit"
+                                                    class="ml-3 btn inline-flex items-center gap-x-2 bg-green-600 text-white border-green-600">Place
+                                                    Order</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        {{-- Kolom Kanan: Order Details --}}
+                        <div class="w-full md:w-full lg:w-1/3 lg:ml-14">
+                            <div>
+                                <div class="card shadow-sm">
+                                    <h5 class="px-6 py-4 border-b border-gray-300">Ringkasan Belanja</h5>
+                                    <ul class="flex flex-col">
+                                        @foreach ($cart_items as $item)
+                                        <li class="py-3 px-6 border-b border-gray-300">
+                                            <div class="flex flex-wrap items-center">
+                                                <div class="w-1/5 md:w-1/5"><img
+                                                        src="{{ url('storage/' . $item['image']) }}"
+                                                        alt="{{ $item['name'] }}" class="w-10" /></div>
+                                                <div class="w-2/5 md:w-2/5 flex flex-col flex-wrap gap-1">
+                                                    <h6>{{ $item['name'] }}</h6>
+                                                </div>
+                                                <div class="w-1/5 md:w-1/5 text-center text-gray-700"><span>x{{
+                                                        $item['quantity'] }}</span></div>
+                                                <div class="w-1/5 text-center md:w-1/5"><span
+                                                        class="font-bold text-gray-800">Rp {{
+                                                        number_format($item['price'], 0,
+                                                        ',', '.') }}</span></div>
+                                            </div>
+                                        </li>
+                                        @endforeach
+                                        <li class="py-3 px-6 border-b border-gray-300 flex flex-col gap-2">
+                                            <div class="flex items-center justify-between">
+                                                <div>Harga Produk</div>
+                                                <div class="font-bold text-gray-800">Rp {{ number_format($sub_total, 0,
+                                                    ',', '.') }}
+                                                </div>
+                                            </div>
+                                            <div class="flex items-center justify-between">
+                                                <div class="flex items-center gap-2 justify-center"><span>Biaya
+                                                        Layanan</span>
+                                                    <span class="text-gray-700" data-bs-toggle="tooltip"
+                                                        aria-label="Biaya Layanan"
+                                                        data-bs-original-title="Biaya ini mencakup biaya administrasi dan pengemasan.">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14"
+                                                            viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                                            stroke-width="2" stroke-linecap="round"
+                                                            stroke-linejoin="round"
+                                                            class="icon icon-tabler icons-tabler-outline icon-tabler-info-circle">
+                                                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                                            <path d="M3 12a9 9 0 1 0 18 0a9 9 0 0 0 -18 0"></path>
+                                                            <path d="M12 9h.01"></path>
+                                                            <path d="M11 12h1v4h1"></path>
+                                                        </svg>
+                                                    </span>
+                                                </div>
+                                                <div class="font-bold text-gray-800">Rp {{ number_format($service_fee,
+                                                    0,
+                                                    ',', '.') }}</div>
+                                            </div>
+                                        </li>
+                                        <li class="py-3 px-6 ">
+                                            <div class="flex items-center justify-between font-bold text-green-600 ">
+                                                <div>Total Bayar</div>
+                                                <div>Rp {{ number_format($grand_total, 0,
+                                                    ',', '.') }}</div>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </main>
+</div>
