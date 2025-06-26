@@ -40,6 +40,12 @@ return [
             'driver' => 'session',
             'provider' => 'users',
         ],
+
+        // TAMBAHKAN BLOK INI
+        'filament' => [
+            'driver' => 'session',
+            'provider' => 'users',
+        ],
     ],
 
     /*

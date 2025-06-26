@@ -37,7 +37,7 @@ class ShoppingCart extends Component
         }
         session()->put('cart', $cart);
         $this->updateCart();
-        // $this->dispatch('product-added', 'Produk berhasil ditambahkan ke keranjang!');
+
         $this->dispatch('swal:toast', [
             'type' => 'success',
             'title' => 'Ditambah ke keranjang.'
@@ -79,9 +79,7 @@ class ShoppingCart extends Component
             unset($cart[$productId]);
             session()->put('cart', $cart);
             $this->updateCart();
-            // $this->dispatch('product-removed', 'Produk berhasil dihapus dari keranjang!');
 
-            // Kirim notifikasi bahwa produk berhasil dihapus
             $this->dispatch('swal:toast', [
                 'type' => 'success',
                 'title' => 'Dihapus dari keranjang.'

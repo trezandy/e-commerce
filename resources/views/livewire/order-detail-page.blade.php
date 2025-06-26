@@ -3,12 +3,6 @@
         <div class="container">
             <div class="flex flex-wrap min-h-screen justify-center items-center">
                 <div class="lg:w-2/3 flex flex-col gap-10">
-                    <div class="flex flex-col justify-center lg:justify-start w-full text-center lg:text-left">
-                        <a href="{{ route('home') }}">
-                            <img src="{{ asset('assets/images/logo/freshcart-logo.svg') }}" alt="Logo"
-                                class="mx-auto lg:mx-0 mb-8" />
-                        </a>
-                    </div>
                     <div class="flex-col lg:flex-row flex justify-center items-center gap-8">
                         <div class="lg:w-1/2 w-full">
                             <img src="{{ asset('assets/images/svg-graphics/200-success.svg') }}" alt="Payment Success"

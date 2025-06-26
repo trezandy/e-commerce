@@ -36,7 +36,14 @@
                 <div class="flex flex-wrap">
                     <div class="w-full mb-6">
                         <h1 class="text-xl">Checkout</h1>
-                        <p>Sudah memiliki akun? Klik di sini untuk <a href="#" class="text-green-600">Masuk</a></p>
+                        @auth
+                        <p>Anda checkout sebagai <span class="font-semibold text-md text-green-600">{{
+                                Auth::user()->name
+                                }}</span>.</p>
+                        @else
+                        <p>Sudah memiliki akun? Klik di sini untuk <a href="#!" class="text-green-600"
+                                data-bs-toggle="modal" data-bs-target="#authModal">Masuk atau Daftar</a>.</p>
+                        @endguest
                     </div>
                 </div>
 
@@ -45,46 +52,43 @@
                         {{-- Kolom Kiri: Accordion --}}
                         <div class="lg:w-3/5 md:w-full">
                             <div class="accordion accordion-flush" id="accordionFlushExample">
-
                                 {{-- Item 1: Alamat Pengiriman --}}
-                                <div class="border-b border-gray-300 py-4">
-                                    <a href="#"
-                                        class="flex flex-row gap-2 items-center text-gray-900 text-md font-bold collapsed"
-                                        data-bs-toggle="collapse" data-bs-target="#flush-collapseOne"
-                                        aria-expanded="true" aria-controls="flush-collapseOne">
-                                        <svg xmlns="http://www.w3.org/2000/svg"
-                                            class="icon icon-tabler icon-tabler-map-pin inline-block text-gray-500"
-                                            width="20" height="20" viewBox="0 0 24 24" stroke-width="1.5"
-                                            stroke="currentColor" fill="none" stroke-linecap="round"
-                                            stroke-linejoin="round">
-                                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                            <path d="M9 11a3 3 0 1 0 6 0a3 3 0 0 0 -6 0" />
-                                            <path
-                                                d="M17.657 16.657l-4.243 4.243a2 2 0 0 1 -2.827 0l-4.244 -4.243a8 8 0 1 1 11.314 0z" />
-                                        </svg>
-                                        Alamat Pengiriman
-                                    </a>
-                                    <div id="flush-collapseOne" class="accordion-collapse collapse show"
-                                        data-bs-parent="#accordionFlushExample">
-                                        <div class="my-6">
-                                            {{-- Nanti, di sini kita bisa buat logic untuk memilih alamat atau menambah
-                                            alamat baru --}}
-                                            <div class="card card-body flex-col gap-4">
-                                                <div class="relative flex items-center gap-2">
-                                                    <input class="w-4 h-4 text-green-600" type="radio"
-                                                        name="flexRadioDefault" id="homeRadio" checked />
-                                                    <label class="text-gray-800 inline-block"
-                                                        for="homeRadio">Home</label>
-                                                </div>
-                                                <address class="not-italic">
-                                                    <strong>Jitu Chauhan</strong><br />
-                                                    4450 North Avenue Oakland,<br />
-                                                    Nebraska, United States,<br />
-                                                    <abbr title="Phone">P: 402-776-1106</abbr>
-                                                </address>
-                                                <span class="text-red-600">Default address</span>
-                                            </div>
-                                        </div>
+                                <div class="mt-4 flex flex-col gap-4">
+                                    <div>
+                                        <label for="full_name" class="mb-2 block text-sm font-medium">Nama
+                                            Lengkap</label>
+                                        <input type="text" id="full_name" wire:model.defer="full_name"
+                                            class="border border-gray-300 text-gray-900 rounded-lg focus:ring-green-600 focus:border-green-600 block w-full p-2.5"
+                                            placeholder="Masukkan Nama Lengkap">
+                                        @error('full_name') <span class="text-red-500 text-sm mt-1">{{ $message
+                                            }}</span> @enderror
+                                    </div>
+                                    <div>
+                                        <label for="email" class="mb-2 block text-sm font-medium">Alamat Email</label>
+                                        <input type="email" id="email" wire:model.defer="email"
+                                            class="border border-gray-300 text-gray-900 rounded-lg focus:ring-green-600 focus:border-green-600 block w-full p-2.5"
+                                            placeholder="Masukkan Alamat Email">
+                                        @error('email') <span class="text-red-500 text-sm mt-1">{{ $message }}</span>
+                                        @enderror
+                                    </div>
+                                    <div>
+                                        <label for="phone_number" class="mb-2 block text-sm font-medium">Nomor
+                                            Telepon</label>
+                                        <input type="tel" id="phone_number" wire:model.defer="phone_number"
+                                            class="border border-gray-300 text-gray-900 rounded-lg focus:ring-green-600 focus:border-green-600 block w-full p-2.5"
+                                            placeholder="Masukkan Nomor Telepon">
+                                        @error('phone_number') <span class="text-red-500 text-sm mt-1">{{ $message
+                                            }}</span> @enderror
+                                    </div>
+                                    <div>
+                                        <label for="shipping_address" class="mb-2 block text-sm font-medium">Alamat
+                                            Lengkap Pengiriman</label>
+                                        <textarea id="shipping_address" wire:model.defer="shipping_address"
+                                            class="border border-gray-300 text-gray-900 rounded-lg focus:ring-green-600 focus:border-green-600 block w-full p-2.5"
+                                            rows="3"
+                                            placeholder="Contoh: Jl. Sudirman No. 123, Kel. Suka Maju, Kec. Damai, Kota Palu..."></textarea>
+                                        @error('shipping_address') <span class="text-red-500 text-sm mt-1">{{ $message
+                                            }}</span> @enderror
                                     </div>
                                 </div>
 
