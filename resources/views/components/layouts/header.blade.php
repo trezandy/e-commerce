@@ -12,9 +12,6 @@
                         {{-- Form Pencarian --}}
                     </div>
 
-                    {{-- ====================================================== --}}
-                    {{-- ==== HEADER DINAMIS (BAGIAN YANG DIUBAH) ==== --}}
-                    {{-- ====================================================== --}}
                     <div class="lg:w-1/5 text-end md:w-1/2 w-3/5">
                         <div class="flex gap-4 md:gap-7 items-center justify-end">
                             @guest
@@ -34,36 +31,56 @@
                             @endguest
 
                             @auth
-                            {{-- Tampilkan ini jika pengguna sudah login --}}
-                            <div class="relative group">
-                                <a href="{{ route('my-account.index') }}" class="text-green-600">
-                                    <svg xmlns="http://www.w3.org/2000/svg"
-                                        class="icon icon-tabler icon-tabler-user-check" width="24" height="24"
-                                        viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none"
-                                        stroke-linecap="round" stroke-linejoin="round">
-                                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                        <path d="M8 7a4 4 0 1 0 8 0a4 4 0 0 0 -8 0" />
-                                        <path d="M6 21v-2a4 4 0 0 1 4 -4h4" />
-                                        <path d="M15 19l2 2l4 -4" />
-                                    </svg>
+                            <div class="dropdown">
+                                <a href="{{ route('my-account.index') }}" class="text-green-600 dropdown-toggle"
+                                    role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    {{ Auth::user()->name }}
                                 </a>
-                                {{-- Dropdown untuk Akun --}}
-                                <div
-                                    class="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-50 hidden group-hover:block">
-                                    <div class="px-4 py-2 text-sm text-gray-700">Hi, {{ Auth::user()->name }}</div>
-                                    <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">My
-                                        Account</a>
-                                    <form method="POST" action="{{ route('logout') }}">
+
+                                {{-- Konten Dropdown --}}
+                                <div class="dropdown-menu dropdown-menu-end w-56">
+                                    <div class="px-4 py-3 border-b border-gray-200">
+                                        <p class="text-sm text-gray-500">Masuk sebagai</p>
+                                        <p class="text-sm font-medium text-gray-900 truncate">{{ auth()->user()->email
+                                            }}</p>
+                                    </div>
+                                    <a href="{{ route('my-account.index') }}"
+                                        class="dropdown-item flex items-center gap-3">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-id"
+                                            width="18" height="18" viewBox="0 0 24 24" stroke-width="1.5"
+                                            stroke="currentColor" fill="none" stroke-linecap="round"
+                                            stroke-linejoin="round">
+                                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                            <path
+                                                d="M3 4m0 3a3 3 0 0 1 3 -3h12a3 3 0 0 1 3 3v10a3 3 0 0 1 -3 3h-12a3 3 0 0 1 -3 -3z" />
+                                            <path d="M9 10m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" />
+                                            <path d="M15 8l2 0" />
+                                            <path d="M15 12l2 0" />
+                                            <path d="M7 16l10 0" />
+                                        </svg>
+                                        <span>Akun Saya</span>
+                                    </a>
+                                    <div class="border-t border-gray-200"></div>
+                                    <form method="POST" action="{{ route('logout') }}" class="w-full">
                                         @csrf
-                                        <a href="{{ route('logout') }}"
-                                            onclick="event.preventDefault(); this.closest('form').submit();"
-                                            class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                                            Logout
-                                        </a>
+                                        <button type="submit" class="dropdown-item flex items-center gap-3 w-full">
+                                            <svg xmlns="http://www.w3.org/2000/svg"
+                                                class="icon icon-tabler icon-tabler-logout text-red-600" width="18"
+                                                height="18" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+                                                fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                                <path
+                                                    d="M14 8v-2a2 2 0 0 0 -2 -2h-7a2 2 0 0 0 -2 2v12a2 2 0 0 0 2 2h7a2 2 0 0 0 2 -2v-2" />
+                                                <path d="M9 12h12l-3 -3" />
+                                                <path d="M18 15l3 -3" />
+                                            </svg>
+                                            <span class="text-red-600">Logout</span>
+                                        </button>
                                     </form>
                                 </div>
                             </div>
                             @endauth
+
 
                             <div>
                                 <livewire:cart-icon />
@@ -134,7 +151,7 @@
                                             d="M14 14m0 1a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v4a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z" />
                                     </svg>
                                 </span>
-                                All Category
+                                All Categories
                             </a>
                             <div class="collapse mt-2" id="collapseExample">
                                 <div class="card card-body">

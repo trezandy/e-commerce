@@ -11,6 +11,13 @@ class Order extends Model
 
     public function items()
     {
+        // Mendefinisikan bahwa sebuah Order 'memiliki' banyak OrderItem.
         return $this->hasMany(OrderItem::class);
+    }
+
+    public function user()
+    {
+        // Mendefinisikan bahwa sebuah Order 'milik' seorang User.
+        return $this->belongsTo(User::class);
     }
 }
