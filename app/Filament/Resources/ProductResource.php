@@ -59,6 +59,15 @@ class ProductResource extends Resource
                             ->image() // Hanya terima file gambar
                             ->directory('products'), // Simpan di folder storage/app/public/products
                     ]),
+                    Forms\Components\Repeater::make('images')
+                        ->label('Image Gallery')
+                        ->schema([
+                            Forms\Components\FileUpload::make('path')
+                                ->label('Image')
+                                ->image(),
+                        ])
+                        ->maxItems(3) // <-- Batasan maksimal 3 gambar
+                        ->columnSpanFull(),
                 ])->columnSpan(1),
             ])->columns(3);
     }

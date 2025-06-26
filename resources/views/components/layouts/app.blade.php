@@ -103,6 +103,8 @@
     <script src="{{ asset('assets/libs/swiper/swiper-bundle.min.js') }}"></script>
     <script src="{{ asset('assets/js/vendors/swiper.js') }}"></script>
     <script src="{{ asset('assets/js/vendors/validation.js') }}"></script>
+
+    @stack('scripts')
 </body>
 
 </html>

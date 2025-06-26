@@ -13,7 +13,13 @@ class Product extends Model
     // Tambahkan baris ini untuk keamanan Mass Assignment
     protected $guarded = [];
 
-    // TAMBAHKAN FUNGSI DI BAWAH INI
+    protected $casts = [
+        'images' => 'array',
+
+    ];
+    /**
+     * Relasi ke kategori produk
+     */
     public function category()
     {
         return $this->belongsTo(Category::class);

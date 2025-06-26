@@ -12,8 +12,7 @@ use Filament\Infolists\Infolist;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Illuminate\Support\HtmlString;
 
 class OrderResource extends Resource
 {
@@ -32,7 +31,7 @@ class OrderResource extends Resource
         // Form untuk halaman Edit, fokus pada perubahan status
         return $form
             ->schema([
-                Forms\Components\Section::make('Update Status Pesanan')
+                Forms\Components\Section::make('Update Status')
                     ->schema([
                         Forms\Components\Select::make('status')
                             ->options([
@@ -40,20 +39,19 @@ class OrderResource extends Resource
                                 'processing' => 'Processing',
                                 'completed' => 'Completed',
                                 'cancelled' => 'Cancelled',
-                            ])->required()->label('Status Order'),
+                            ])->required()->label('Order Status'),
                         Forms\Components\Select::make('payment_status')
                             ->options([
                                 'pending' => 'Pending',
                                 'paid' => 'Paid',
                                 'failed' => 'Failed',
-                            ])->required()->label('Status Pembayaran'),
+                            ])->required()->label('Payment Status'),
                     ]),
             ]);
     }
 
     public static function table(Table $table): Table
     {
-        // Tampilan tabel daftar pesanan (sesuai order-list.html)
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('id')->label('Order ID')->searchable(),
@@ -64,6 +62,13 @@ class OrderResource extends Resource
                     'completed' => 'success',
                     'cancelled' => 'danger',
                 })->searchable(),
+                Tables\Columns\TextColumn::make('payment_method')
+                    ->searchable()
+                    ->formatStateUsing(fn(string $state): string => match ($state) {
+                        'cod' => 'Cash on Delivery',
+                        'bca' => 'Transfer Bank BCA',
+                        default => $state,
+                    }),
                 Tables\Columns\TextColumn::make('grand_total')->numeric()->sortable()->money('IDR'),
                 Tables\Columns\TextColumn::make('created_at')->label('Order Date')->dateTime()->sortable(),
             ])
@@ -85,39 +90,82 @@ class OrderResource extends Resource
 
     public static function infolist(Infolist $infolist): Infolist
     {
-        // Tampilan di halaman detail (sesuai order-single.html)
         return $infolist
             ->schema([
-                Components\Section::make()->schema([
-                    Components\Grid::make(3)->schema([
-                        Components\Group::make()->schema([
-                            Components\TextEntry::make('id')->label('Order ID'),
-                            Components\TextEntry::make('created_at')->label('Order Date')->dateTime(),
-                        ]),
-                        Components\Group::make()->schema([
-                            Components\TextEntry::make('user.name')->label('Customer'),
-                            Components\TextEntry::make('user.email')->label('Email'),
-                        ]),
-                        Components\Group::make()->schema([
-                            Components\TextEntry::make('status')->badge()->color(fn(string $state): string => match ($state) {
-                                'pending' => 'gray',
-                                'processing' => 'warning',
-                                'completed' => 'success',
-                                'cancelled' => 'danger',
-                            }),
-                            Components\TextEntry::make('grand_total')->money('IDR'),
+                Components\Section::make(function (?Order $record): HtmlString {
+                    // Jika record tidak ada, kembalikan string kosong
+                    if (!$record) {
+                        return new HtmlString('');
+                    }
+                    // Buat string HTML untuk heading
+                    // $orderId = e("Order ID: #{$record->id}");
+                    $orderId = "Order Information";
+
+                    // Gabungkan menjadi satu string HTML yang akan dirender
+                    return new HtmlString("<div class=\"flex items-center gap-x-3\">{$orderId}</div>");
+                })
+                    ->schema([
+                        // Skema grid 3 kolom yang sudah ada sebelumnya
+                        Components\Grid::make(3)->schema([
+                            // Kolom 1: Customer Details
+                            Components\Group::make()->schema([
+                                Components\TextEntry::make('user.name')
+                                    ->label('Customer Details')
+                                    ->formatStateUsing(function (Order $record): HtmlString {
+                                        $name = e($record->user->name);
+                                        $email = e($record->user->email);
+                                        $phone = e($record->phone_number);
+                                        return new HtmlString("{$name}<br>{$email}<br>{$phone}");
+                                    })
+                                    ->html(),
+                                Components\TextEntry::make('payment_method')
+                                    ->label('Payment Method')
+                                    ->formatStateUsing(fn(string $state): string => match ($state) {
+                                        'cod' => 'Cash on Delivery',
+                                        'bca' => 'Transfer Bank BCA',
+                                        default => $state,
+                                    }),
+                            ]),
+
+                            // Kolom 2: Shipping Address
+                            Components\Group::make()->schema([
+                                Components\TextEntry::make('shipping_address')
+                                    ->label('Shipping Address')
+                                    ->formatStateUsing(fn(?string $state): HtmlString => new HtmlString(nl2br(e($state))))
+                                    ->html(),
+                                Components\TextEntry::make('payment_status')
+                                    ->label('Payment Status') // Label dikosongkan agar tidak ada ruang tambahan
+                                    ->badge()
+                                    ->color(fn(string $state): string => match ($state) {
+                                        'pending' => 'warning',
+                                        'paid' => 'success',
+                                        'failed' => 'danger',
+                                    }),
+                            ]),
+
+                            // Kolom 3: Order Details
+                            Components\Group::make()->schema([
+                                Components\TextEntry::make('id')
+                                    ->label('Order Details')
+                                    ->formatStateUsing(function (Order $record): HtmlString {
+                                        $id = 'Order ID: #' . e($record->id);
+                                        $date = 'Order Date: ' . $record->created_at->format('M d, Y');
+                                        $total = 'Order Total: Rp ' . number_format($record->grand_total, 0, ',', '.');
+                                        return new HtmlString("{$id}<br>{$date}<br>{$total}");
+                                    })
+                                    ->html(),
+                                Components\TextEntry::make('status')
+                                    ->label('Order Status') // Label dikosongkan agar tidak ada ruang tambahan
+                                    ->badge()
+                                    ->color(fn(string $state): string => match ($state) {
+                                        'pending' => 'gray',
+                                        'processing' => 'warning',
+                                        'completed' => 'success',
+                                        'cancelled' => 'danger',
+                                    }),
+                            ]),
                         ]),
                     ]),
-                ]),
-                Components\Section::make('Shipping & Payment')->schema([
-                    Components\Grid::make(2)->schema([
-                        Components\TextEntry::make('shipping_address')->label('Shipping Address'),
-                        Components\Group::make()->schema([
-                            Components\TextEntry::make('phone_number')->label('Phone'),
-                            Components\TextEntry::make('payment_method')->label('Payment Method'),
-                        ]),
-                    ])
-                ]),
             ]);
     }
 

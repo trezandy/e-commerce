@@ -40,11 +40,33 @@ class ShoppingCart extends Component
 
         $this->dispatch('swal:toast', [
             'type' => 'success',
-            'title' => 'Ditambah ke keranjang.'
+            'title' => 'Ditambahkan ke keranjang.'
         ]);
     }
 
-    // -- METHOD BARU UNTUK MENGURANGI KUANTITAS --
+    #[On('add-to-cart-with-quantity')]
+    public function addToCartWithQuantity($productId, $quantity = 1)
+    {
+        $cart = session()->get('cart', []);
+        $product = Product::find($productId);
+        if (!$product) {
+            return;
+        }
+
+        if (isset($cart[$productId])) {
+            $cart[$productId]['quantity'] += $quantity;
+        } else {
+            $cart[$productId] = ["name" => $product->name, "quantity" => $quantity, "price" => $product->price, "image" => $product->image];
+        }
+
+        session()->put('cart', $cart);
+        $this->updateCart();
+        $this->dispatch('swal:toast', [
+            'type' => 'success',
+            'title' => 'Ditambahkan ke keranjang.'
+        ]);
+    }
+
     public function decreaseQuantity($productId)
     {
         $cart = session()->get('cart', []);

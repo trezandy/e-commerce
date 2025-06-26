@@ -25,12 +25,12 @@ class ItemsRelationManager extends RelationManager
             ->recordTitleAttribute('id')
             ->columns([
                 Tables\Columns\ImageColumn::make('product.image')
-                    ->label('') // Hilangkan label agar lebih bersih
-                    ->width(80)->height(80)
+                    ->label('Product') // Hilangkan label agar lebih bersih
+                    ->width(48)->height(48)
                     ->circular(),
 
                 Tables\Columns\TextColumn::make('product.name')
-                    ->label('Product'),
+                    ->label(''),
 
                 Tables\Columns\TextColumn::make('price')
                     ->label('Price')
@@ -44,6 +44,10 @@ class ItemsRelationManager extends RelationManager
                     ->state(fn($record): float => $record->price * $record->quantity)
                     ->money('IDR'),
             ])
+            ->contentFooter(
+                // Memanggil file view baru dan mengirim data order saat ini
+                view('filament.tables.footer.order-summary', ['record' => $this->getOwnerRecord()])
+            )
             ->paginated(false)
             ->actions([])
             ->bulkActions([]);

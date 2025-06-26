@@ -282,31 +282,13 @@
                 <div class="relative rounded-lg break-words border bg-white border-gray-300 card-product">
                     <div class="flex-auto p-4">
                         <div class="text-center relative flex justify-center">
-                            <div class="absolute top-0 left-0">
+                            {{-- <div class="absolute top-0 left-0">
                                 <span
                                     class="inline-block p-1 text-center font-semibold text-sm align-baseline leading-none rounded bg-green-600 text-white">14%</span>
-                            </div>
+                            </div> --}}
                             <a href="{{ route('product.show', $product->slug) }}"><img
                                     src="{{ asset('storage/' . $product->image) }}" alt="Grocery Ecommerce Template"
                                     class="w-full h-auto" /></a>
-
-                            <div class="absolute w-full bottom-[15%] opacity-0 invisible card-product-action">
-                                <a href="#!"
-                                    class="h-[34px] w-[34px] leading-[34px] bg-white shadow inline-flex items-center justify-center rounded-lg hover:bg-green-600 hover:text-white"
-                                    data-bs-toggle="tooltip" data-bs-html="true" title="Quick View">
-                                    <span data-bs-toggle="modal" data-bs-target="#quickViewModal">
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-eye"
-                                            width="16" height="16" viewBox="0 0 24 24" stroke-width="2"
-                                            stroke="currentColor" fill="none" stroke-linecap="round"
-                                            stroke-linejoin="round">
-                                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                            <path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
-                                            <path
-                                                d="M21 12c-2.4 4 -5.4 6 -9 6c-3.6 0 -6.6 -2 -9 -6c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6" />
-                                        </svg>
-                                    </span>
-                                </a>
-                            </div>
                         </div>
                         <div class="flex flex-col gap-3">
                             <a href="#!" class="text-decoration-none text-gray-500"><small>{{

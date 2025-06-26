@@ -7,13 +7,13 @@ use Illuminate\Http\Request;
 
 class ProductController extends Controller
 {
-    public function show(string $slug)
+    /**
+     * Menampilkan halaman detail untuk satu produk.
+     */
+    public function show(Product $product)
     {
-        // Cari produk berdasarkan slug-nya. Jika tidak ada, otomatis tampilkan 404 Not Found.
-        $product = Product::where('slug', $slug)->firstOrFail();
-
-        return view('product-detail', [
-            'product' => $product
-        ]);
+        // Laravel secara otomatis akan mencari produk berdasarkan slug dari URL.
+        // Kemudian kita mengirim data '$product' ke view 'product-detail'.
+        return view('product-detail', ['product' => $product]);
     }
 }
