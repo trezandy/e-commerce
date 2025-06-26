@@ -29,9 +29,11 @@
                                 </div>
 
                                 <div class="text-center lg:text-left">
-                                    <a href="{{ route('home') }}"
+                                    <a href="{{ route('my-account.index') }}"
                                         class="btn inline-flex items-center gap-x-2 bg-green-600 text-white border-green-600">
-                                        Kembali ke Halaman Utama
+                                        Lihat Orderan Saya
+                                        <span class="sr-only">Lihat Orderan Saya</span>
+                                        {{-- Ikon panah ke kanan --}}
                                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                                             viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                                             stroke-linecap="round" stroke-linejoin="round"

@@ -25,3 +25,6 @@ Route::middleware('auth')->group(function () {
 Route::get('/produk/{slug}', [ProductController::class, 'show'])->name('product.show');
 
 require __DIR__ . '/auth.php';
+
+Route::redirect('/register', '/');
+Route::redirect('/login', '/');
