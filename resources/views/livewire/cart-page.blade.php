@@ -30,7 +30,7 @@
         <div class="my-10">
             <div class="container">
                 <div class="flex flex-wrap mb-6">
-                    <h1 class="text-xl">Shop Cart</h1>
+                    <h1 class="text-xl">Keranjang Belanja</h1>
                 </div>
 
                 @if (!empty($cart_items))
@@ -110,7 +110,7 @@
                     <div class="w-full lg:w-1/3 md:w-full">
                         <div class="relative card min-w-0">
                             <div class="card-body flex flex-col gap-4">
-                                <h2 class="text-md">Ringkasan</h2>
+                                <h2 class="text-md">Ringkasan Belanja</h2>
                                 <div
                                     class="relative flex flex-col min-w-0 rounded-lg break-words border bg-white border-1 border-gray-300">
                                     <ul class="flex flex-col">

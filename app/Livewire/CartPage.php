@@ -2,6 +2,7 @@
 
 namespace App\Livewire;
 
+use App\Models\Product;
 use Livewire\Component;
 use Livewire\Attributes\Layout;
 
@@ -41,6 +42,14 @@ class CartPage extends Component
     {
         $cart = session()->get('cart', []);
         if (isset($cart[$productId])) {
+            $product = Product::find($productId);
+            if ($product) {
+                // Cek apakah penambahan kuantitas akan melebihi stok
+                if (($cart[$productId]['quantity'] + 1) > $product->stock) {
+                    $this->dispatch('swal:toast', ['type' => 'error', 'title' => 'Stok tidak mencukupi.']);
+                    return;
+                }
+            }
             $cart[$productId]['quantity']++;
             session()->put('cart', $cart);
             $this->updateCart();

@@ -223,7 +223,7 @@
                                         data-bs-target="#authModal">My Account</a>
                                     @endguest
                                     @auth
-                                    <a class="nav-link" href="{{ route('my-account.index') }}">My Account</a>
+                                    <a class="nav-link" href="{{ route('my-account.index') }}">My Orders</a>
                                     @endauth
                                 </li>
                             </ul>

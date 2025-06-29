@@ -37,9 +37,10 @@
                     <div class="w-full mb-6">
                         <h1 class="text-xl">Checkout</h1>
                         @auth
-                        <p>Anda checkout sebagai <span class="font-semibold text-md text-green-600">{{
-                                Auth::user()->name
-                                }}</span>.</p>
+                        <p>Hai, <span class="font-semibold text-green-600">{{ Auth::user()->name }}</span>!
+                            Silakan lengkapi informasi di bawah ini untuk menyelesaikan
+                            pesanan Anda.</p>
+
                         @else
                         <p>Sudah memiliki akun? Klik di sini untuk <a href="#!" class="text-green-600"
                                 data-bs-toggle="modal" data-bs-target="#authModal">Masuk atau Daftar</a>.</p>
@@ -56,7 +57,7 @@
                                 <div class="mt-4 flex flex-col gap-4">
                                     <div>
                                         <label for="full_name" class="mb-2 block text-sm font-medium">Nama
-                                            Lengkap</label>
+                                            Penerima</label>
                                         <input type="text" id="full_name" wire:model.defer="full_name"
                                             class="border border-gray-300 text-gray-900 rounded-lg focus:ring-green-600 focus:border-green-600 block w-full p-2.5"
                                             placeholder="Masukkan Nama Lengkap">
@@ -86,7 +87,7 @@
                                         <textarea id="shipping_address" wire:model.defer="shipping_address"
                                             class="border border-gray-300 text-gray-900 rounded-lg focus:ring-green-600 focus:border-green-600 block w-full p-2.5"
                                             rows="3"
-                                            placeholder="Contoh: Jl. Sudirman No. 123, Kel. Suka Maju, Kec. Damai, Kota Palu..."></textarea>
+                                            placeholder="Contoh: Jl. Sudirman No. 123, Kel. Suka Maju, Kec. Damai, Kota Palu."></textarea>
                                         @error('shipping_address') <span class="text-red-500 text-sm mt-1">{{ $message
                                             }}</span> @enderror
                                     </div>
@@ -143,24 +144,26 @@
                                         <div class="mt-6 flex flex-col gap-4">
                                             <div class="card p-6">
                                                 <div class="flex gap-3">
-                                                    <input wire:model.defer="payment_method" value="cod"
+                                                    <input wire:model.defer="payment_method" value="bank"
                                                         class="w-4 h-4 text-green-600" type="radio"
-                                                        name="payment_method_radio" id="cashonDelivery" />
+                                                        name="payment_method_radio" id="bankTransfer" />
                                                     <div class="flex flex-col gap-1">
-                                                        <h5 class="text-base">Cash on Delivery</h5>
-                                                        <p class="text-sm">Bayar saat pesanan Anda tiba.</p>
+                                                        <h5 class="text-base">Transfer Bank</h5>
+                                                        <p class="text-sm">Anda akan menerima nomor rekening setelah
+                                                            membuat pesanan.</p>
                                                     </div>
                                                 </div>
                                             </div>
                                             <div class="card p-6">
                                                 <div class="flex gap-3">
-                                                    <input wire:model.defer="payment_method" value="bca"
+                                                    {{-- Kita beri value 'midtrans' untuk membedakannya --}}
+                                                    <input wire:model.defer="payment_method" value="midtrans"
                                                         class="w-4 h-4 text-green-600" type="radio"
-                                                        name="payment_method_radio" id="bcaTransfer" />
+                                                        name="payment_method_radio" id="midtransPayment" />
                                                     <div class="flex flex-col gap-1">
-                                                        <h5 class="text-base">Transfer Bank BCA</h5>
-                                                        <p class="text-sm">Anda akan menerima nomor rekening setelah
-                                                            membuat pesanan.</p>
+                                                        <h5 class="text-base">Online Payment</h5>
+                                                        <p class="text-sm">Bayar dengan Kartu Kredit, QRIS, GoPay,
+                                                            Virtual Account, dll.</p>
                                                     </div>
                                                 </div>
                                             </div>

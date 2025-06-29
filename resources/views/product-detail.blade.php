@@ -107,7 +107,7 @@
 							<button class="inline-block py-3 font-semibold px-4 no-underline nav-link active"
 								id="product-tab" data-bs-toggle="tab" data-bs-target="#product-tab-pane" type="button"
 								role="tab">
-								Product Details
+								Detail Produk
 							</button>
 						</li>
 					</ul>

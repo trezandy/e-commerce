@@ -31,18 +31,24 @@
     <!-- Tombol Add to Cart & Wishlist -->
     <div class="flex flex-wrap justify-start gap-2 items-center">
         <div class="lg:w-1/3 md:w-2/5 w-full grid">
+            {{-- Kondisi untuk mengecek stok --}}
+            @if($product->stock > 0)
             <button wire:click="addToCart" type="button"
-                class="btn gap-x-1 bg-green-600 text-white border-green-600 justify-center">
+                class="inline-flex items-center gap-2 bg-green-600 text-white font-semibold px-4 py-2 rounded">
                 <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
                     stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                    class="icon icon-tabler icons-tabler-outline icon-tabler-shopping-bag">
+                    class="icon icon-tabler icon-tabler-shopping-bag">
                     <path stroke="none" d="M0 0h24v24H0z" fill="none" />
                     <path
                         d="M6.331 8h11.339a2 2 0 0 1 1.977 2.304l-1.255 8.152a3 3 0 0 1 -2.966 2.544h-6.852a3 3 0 0 1 -2.965 -2.544l-1.255 -8.152a2 2 0 0 1 1.977 -2.304z" />
                     <path d="M9 11v-5a3 3 0 0 1 6 0v5" />
                 </svg>
-                Add to cart
+                <span class="whitespace-nowrap">Tambahkan ke Keranjang</span>
             </button>
+
+            @else
+            <span class="text-center font-semibold text-red-600 bg-red-100 px-4 py-2 rounded-lg">Stok Habis</span>
+            @endif
         </div>
     </div>
 </div>

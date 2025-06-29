@@ -19,6 +19,10 @@
 
     @livewireStyles
 
+    {{-- Script Midtrans diletakkan di HEAD --}}
+    <script type="text/javascript" src="https://app.sandbox.midtrans.com/snap/snap.js"
+        data-client-key="{{ config('services.midtrans.client_key') }}"></script>
+
     <title>E-Commerce Project</title>
 </head>
 
@@ -57,12 +61,27 @@
     {{-- Footer Anda --}}
     <x-layouts.footer />
 
-    {{-- Livewire Scripts --}}
-    @livewireScripts
+    {{-- Aset JS Pihak Ketiga (Bootstrap, Swiper, dll.) --}}
+    <script src="{{ asset('assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js') }}"></script>
+    <script src="{{ asset('assets/libs/simplebar/dist/simplebar.min.js') }}"></script>
+    <script src="{{ asset('assets/js/theme.min.js') }}"></script>
+    <script src="{{ asset('assets/js/vendors/countdown.js') }}"></script>
+    <script src="{{ asset('assets/libs/tiny-slider/dist/min/tiny-slider.js') }}"></script>
+    <script src="{{ asset('assets/js/vendors/tns-slider.js') }}"></script>
+    <script src="{{ asset('assets/js/vendors/zoom.js') }}"></script>
+    <script src="{{ asset('assets/js/vendors/language.js') }}"></script>
+    <script src="{{ asset('assets/libs/swiper/swiper-bundle.min.js') }}"></script>
+    <script src="{{ asset('assets/js/vendors/swiper.js') }}"></script>
+    <script src="{{ asset('assets/js/vendors/validation.js') }}"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bodymovin/5.10.2/lottie.min.js"></script>
+
+    {{-- Livewire Scripts, penting untuk diletakkan sebelum script custom kita --}}
+    @livewireScripts
+    {{-- BLOK SCRIPT UNTUK FUNGSI NORMAL (SWAL & MODAL) --}}
     <script>
         document.addEventListener('livewire:initialized', () => {
-            // Listener untuk notifikasi toast
+            // Listener untuk notifikasi toast SweetAlert
             Livewire.on('swal:toast', event => {
                 const Toast = Swal.mixin({
                     toast: true,
@@ -77,8 +96,7 @@
                 });
             });
 
-            // Listener untuk menutup modal secara paksa
-            // Berguna setelah login/register berhasil
+            // Listener untuk menutup modal
             Livewire.on('close-modal', modalId => {
                 const modalElement = document.getElementById(modalId);
                 if (modalElement) {
@@ -91,18 +109,24 @@
         });
     </script>
 
-    {{-- Aset JS Anda --}}
-    <script src="{{ asset('assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js') }}"></script>
-    <script src="{{ asset('assets/libs/simplebar/dist/simplebar.min.js') }}"></script>
-    <script src="{{ asset('assets/js/theme.min.js') }}"></script>
-    <script src="{{ asset('assets/js/vendors/countdown.js') }}"></script>
-    <script src="{{ asset('assets/libs/tiny-slider/dist/min/tiny-slider.js') }}"></script>
-    <script src="{{ asset('assets/js/vendors/tns-slider.js') }}"></script>
-    <script src="{{ asset('assets/js/vendors/zoom.js') }}"></script>
-    <script src="{{ asset('assets/js/vendors/language.js') }}"></script>
-    <script src="{{ asset('assets/libs/swiper/swiper-bundle.min.js') }}"></script>
-    <script src="{{ asset('assets/js/vendors/swiper.js') }}"></script>
-    <script src="{{ asset('assets/js/vendors/validation.js') }}"></script>
+    {{-- BLOK SCRIPT KHUSUS UNTUK MIDTRANS --}}
+    <script>
+        document.addEventListener('livewire:initialized', () => {
+            // Listener khusus untuk redirect Midtrans, dibungkus verbatim
+            @verbatim
+            Livewire.on('snap-redirect', (event) => {
+                if (window.snap) {
+                    snap.pay(event.token, {
+                        onSuccess: function(result){ window.location.href = '/order/' + result.order_id; },
+                        onPending: function(result){ window.location.href = '/order/' + result.order_id; },
+                        onError: function(result){ alert('Pembayaran gagal!'); },
+                        onClose: function(){ /* opsional: bisa ditambahkan notifikasi */ }
+                    });
+                }
+            });
+            @endverbatim
+        });
+    </script>
 
     @stack('scripts')
 </body>

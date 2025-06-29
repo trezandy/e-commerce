@@ -33,6 +33,12 @@ class OrderResource extends Resource
             ->schema([
                 Forms\Components\Section::make('Update Status')
                     ->schema([
+                        Forms\Components\Select::make('payment_status')
+                            ->options([
+                                'pending' => 'Pending',
+                                'paid' => 'Paid',
+                                'failed' => 'Failed',
+                            ])->required()->label('Payment Status'),
                         Forms\Components\Select::make('status')
                             ->options([
                                 'pending' => 'Pending',
@@ -40,12 +46,6 @@ class OrderResource extends Resource
                                 'completed' => 'Completed',
                                 'cancelled' => 'Cancelled',
                             ])->required()->label('Order Status'),
-                        Forms\Components\Select::make('payment_status')
-                            ->options([
-                                'pending' => 'Pending',
-                                'paid' => 'Paid',
-                                'failed' => 'Failed',
-                            ])->required()->label('Payment Status'),
                     ]),
             ]);
     }
@@ -63,13 +63,14 @@ class OrderResource extends Resource
                     'cancelled' => 'danger',
                 })->searchable(),
                 Tables\Columns\TextColumn::make('payment_method')
+                    ->label('Payment Method')
                     ->searchable()
                     ->formatStateUsing(fn(string $state): string => match ($state) {
-                        'cod' => 'Cash on Delivery',
-                        'bca' => 'Transfer Bank BCA',
+                        'bank' => 'Bank Transfer',
+                        'midtrans' => 'Online Payment',
                         default => $state,
                     }),
-                Tables\Columns\TextColumn::make('grand_total')->numeric()->sortable()->money('IDR'),
+                Tables\Columns\TextColumn::make('grand_total')->label('Grand Total')->numeric()->sortable()->money('IDR'),
                 Tables\Columns\TextColumn::make('created_at')->label('Order Date')->dateTime()->sortable(),
             ])
             ->defaultSort('created_at', 'desc')
@@ -121,8 +122,8 @@ class OrderResource extends Resource
                                 Components\TextEntry::make('payment_method')
                                     ->label('Payment Method')
                                     ->formatStateUsing(fn(string $state): string => match ($state) {
-                                        'cod' => 'Cash on Delivery',
-                                        'bca' => 'Transfer Bank BCA',
+                                        'bank' => 'Bank Transfer',
+                                        'midtrans' => 'Midtrans',
                                         default => $state,
                                     }),
                             ]),

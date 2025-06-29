@@ -80,6 +80,7 @@
                                         <th class="py-3 pl-6 text-left">Order</th>
                                         <th class="py-3 pl-6 text-left">Date</th>
                                         <th class="py-3 pl-6 text-left">Items</th>
+                                        {{-- <th class="py-3 pl-6 text-left">Payment</th> --}}
                                         <th class="py-3 pl-6 text-left">Status</th>
                                         <th class="py-3 pl-6 text-left">Amount</th>
                                         <th></th>
@@ -112,6 +113,15 @@
                                         <td class="align-middle px-6 py-3">{{ $order->created_at->format('M d, Y') }}
                                         </td>
                                         <td class="align-middle px-6 py-3">{{ $order->items->sum('quantity') }}</td>
+                                        {{-- <td class="align-middle px-6 py-3">
+                                            <span class="inline-block p-1 px-2 text-xs align-baseline leading-none rounded-md font-semibold
+                                                @if($order->payment_status == 'paid') bg-green-100 text-green-800
+                                                @elseif($order->payment_status == 'pending') bg-yellow-100 text-yellow-800
+                                                @else bg-red-100 text-red-800
+                                                @endif">
+                                                {{ ucfirst($order->payment_status) }}
+                                            </span>
+                                        </td> --}}
                                         <td class="align-middle px-6 py-3">
                                             <span class="inline-block p-1 px-2 text-xs align-baseline leading-none rounded-md font-semibold
                                                     @if($order->status == 'processing') bg-yellow-100 text-yellow-800 @endif
@@ -124,6 +134,27 @@
                                         <td class="align-middle px-6 py-3">Rp{{ number_format($order->grand_total, 0,
                                             ',', '.') }}</td>
                                         <td class="text-gray-500 align-middle px-6 py-3">
+                                            {{-- LOGIKA KONDISIONAL BARU --}}
+                                            @if ($order->payment_method == 'bank' && $order->payment_status != 'paid')
+                                            <div class="dropstart">
+                                                <a href="#" class="text-inherit" data-bs-toggle="dropdown"
+                                                    aria-expanded="false">
+                                                    <i class="ti ti-dots-vertical"></i>
+                                                </a>
+                                                <ul class="dropdown-menu">
+                                                    <li>
+                                                        <a class="dropdown-item"
+                                                            href="{{ route('order.detail', $order) }}">
+                                                            @if($order->payment_proof)
+                                                            Lihat Bukti Bayar
+                                                            @else
+                                                            Unggah Bukti Bayar
+                                                            @endif
+                                                        </a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                            @else
                                             <a href="{{ route('order.detail', $order) }}" class="text-inherit"
                                                 title="View Order">
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18"
@@ -136,6 +167,7 @@
                                                         d="M21 12c-2.4 4 -5.4 6 -9 6s-6.6 -2 -9 -6c2.4 -4 5.4 -6 9 -6s6.6 2 9 6" />
                                                 </svg>
                                             </a>
+                                            @endif
                                         </td>
                                     </tr>
                                     @empty

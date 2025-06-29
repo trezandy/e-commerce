@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\MidtransWebhookController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
 use App\Livewire\CartPage;
@@ -13,6 +14,8 @@ Route::get('/', HomePage::class)->name('home');
 Route::get('/cart', CartPage::class)->name('cart.index');
 Route::get('/checkout', CheckoutPage::class)->name('checkout.index');
 Route::get('/product/{product:slug}', [ProductController::class, 'show'])->name('product.show');
+
+Route::post('/midtrans-webhook', [MidtransWebhookController::class, 'handle']);
 
 Route::middleware('auth')->group(function () {
     Route::get('/order/{order}', OrderDetailPage::class)->name('order.detail');

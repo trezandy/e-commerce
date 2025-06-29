@@ -19,12 +19,27 @@ class ShoppingCart extends Component
     #[On('add-to-cart')]
     public function addToCart($productId)
     {
-        $cart = session()->get('cart', []);
         $product = Product::find($productId);
         if (!$product) {
+            return; // Produk tidak ditemukan
+        }
+
+        // Jika stok habis, jangan lakukan apa-apa dan kirim notifikasi
+        if ($product->stock <= 0) {
+            $this->dispatch('swal:toast', ['type' => 'error', 'title' => 'Stok produk habis.']);
             return;
         }
 
+        $cart = session()->get('cart', []);
+
+        // Cek kuantitas di keranjang vs stok produk
+        $quantityInCart = isset($cart[$productId]) ? $cart[$productId]['quantity'] : 0;
+        if ($quantityInCart >= $product->stock) {
+            $this->dispatch('swal:toast', ['type' => 'error', 'title' => 'Stok tidak mencukupi.']);
+            return;
+        }
+
+        // Jika semua aman, tambahkan ke keranjang
         if (isset($cart[$productId])) {
             $cart[$productId]['quantity']++;
         } else {
@@ -38,29 +53,52 @@ class ShoppingCart extends Component
         session()->put('cart', $cart);
         $this->updateCart();
 
-        $this->dispatch('swal:toast', [
-            'type' => 'success',
-            'title' => 'Ditambahkan ke keranjang.'
-        ]);
+        $this->dispatch('swal:toast', ['type' => 'success', 'title' => 'Ditambahkan ke keranjang.']);
     }
 
     #[On('add-to-cart-with-quantity')]
     public function addToCartWithQuantity($productId, $quantity = 1)
     {
-        $cart = session()->get('cart', []);
         $product = Product::find($productId);
         if (!$product) {
+            return; // Produk tidak ditemukan
+        }
+
+        // Jika stok habis, jangan lakukan apa-apa
+        if ($product->stock <= 0) {
+            $this->dispatch('swal:toast', ['type' => 'error', 'title' => 'Stok produk habis.']);
             return;
         }
 
+        $cart = session()->get('cart', []);
+
+        // Ambil kuantitas yang sudah ada di keranjang
+        $quantityInCart = isset($cart[$productId]) ? $cart[$productId]['quantity'] : 0;
+
+        // Hitung total kuantitas yang akan ada di keranjang
+        $totalQuantity = $quantityInCart + $quantity;
+
+        // Cek apakah total kuantitas melebihi stok yang tersedia
+        if ($totalQuantity > $product->stock) {
+            $this->dispatch('swal:toast', ['type' => 'error', 'title' => 'Stok tidak mencukupi.']);
+            return;
+        }
+
+        // Jika semua aman, tambahkan ke keranjang
         if (isset($cart[$productId])) {
             $cart[$productId]['quantity'] += $quantity;
         } else {
-            $cart[$productId] = ["name" => $product->name, "quantity" => $quantity, "price" => $product->price, "image" => $product->image];
+            $cart[$productId] = [
+                "name" => $product->name,
+                "quantity" => $quantity,
+                "price" => $product->price,
+                "image" => $product->image
+            ];
         }
 
         session()->put('cart', $cart);
         $this->updateCart();
+
         $this->dispatch('swal:toast', [
             'type' => 'success',
             'title' => 'Ditambahkan ke keranjang.'
@@ -85,8 +123,14 @@ class ShoppingCart extends Component
     public function increaseQuantity($productId)
     {
         $cart = session()->get('cart', []);
+        $product = Product::find($productId);
 
-        if (isset($cart[$productId])) {
+        if (isset($cart[$productId]) && $product) {
+            // Cek apakah penambahan kuantitas akan melebihi stok
+            if (($cart[$productId]['quantity'] + 1) > $product->stock) {
+                $this->dispatch('swal:toast', ['type' => 'error', 'title' => 'Stok tidak mencukupi.']);
+                return;
+            }
             $cart[$productId]['quantity']++;
             session()->put('cart', $cart);
             $this->updateCart();

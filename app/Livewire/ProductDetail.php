@@ -33,10 +33,10 @@ class ProductDetail extends Component
         // Kita juga kirim kuantitasnya
         $this->dispatch('add-to-cart-with-quantity', productId: $this->product->id, quantity: $this->quantity);
 
-        $this->dispatch('swal:toast', [
-            'type' => 'success',
-            'title' => 'Ditambahkan ke keranjang.'
-        ]);
+        // $this->dispatch('swal:toast', [
+        //     'type' => 'success',
+        //     'title' => 'Ditambahkan ke keranjang.'
+        // ]);
     }
 
     public function render()

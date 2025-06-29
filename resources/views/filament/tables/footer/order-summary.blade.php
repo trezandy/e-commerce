@@ -4,7 +4,7 @@ $subtotal = $record->items->sum(function($item) {
 return $item->price * $item->quantity;
 });
 // Anda bisa menggantinya dengan kolom dari database, misal: $record->shipping_cost
-$serviceFee = 25000; // Biaya pengiriman tetap
+$serviceFee = 2500; // Biaya pengiriman tetap
 $grandTotal = $record->grand_total; // Ambil grand total langsung dari order
 @endphp
 
