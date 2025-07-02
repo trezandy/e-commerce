@@ -17,7 +17,7 @@
                             @guest
                             {{-- Tampilkan ini jika pengguna belum login --}}
                             <div>
-                                <a href="#!" class="text-gray-600" data-bs-toggle="modal" data-bs-target="#authModal">
+                                <a href="#!" data-bs-toggle="modal" data-bs-target="#authModal">
                                     <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user"
                                         width="22" height="22" viewBox="0 0 24 24" stroke-width="1.5"
                                         stroke="currentColor" fill="none" stroke-linecap="round"
@@ -95,7 +95,7 @@
         </div>
         <nav class="navbar relative navbar-expand-lg lg:flex lg:flex-wrap items-center content-between text-black navbar-default"
             aria-label="Offcanvas navbar large">
-            <div class="container max-w-7xl mx-auto w-full xl:px-4 lg:px-0">
+            <div class="container max-w-7xl mx-auto w-full xl:px-0 lg:px-0">
                 <div class="offcanvas offcanvas-left lg:visible" tabindex="-1" id="navbar-default">
                     <div class="offcanvas-header pb-1">
                         <a href="./index.html"><img src="{{ asset('assets/images/logo/freshcart-logo.svg') }}"
@@ -219,8 +219,7 @@
                                 </li>
                                 <li class="nav-item dropdown w-full lg:w-auto">
                                     @guest
-                                    <a href="#!" class="text-gray-600" data-bs-toggle="modal"
-                                        data-bs-target="#authModal">My Account</a>
+                                    <a href="#!" data-bs-toggle="modal" data-bs-target="#authModal">My Account</a>
                                     @endguest
                                     @auth
                                     <a class="nav-link" href="{{ route('my-account.index') }}">My Orders</a>

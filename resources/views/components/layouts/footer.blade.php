@@ -135,8 +135,7 @@
                         </span>
                         ©
                         Build with ❤ by
-                        <a href="https://www.instagram.com/trezandy" target="_blank">Nouval Trezandy</a>
-                        .
+                        <a href="https://www.instagram.com/trezandy" target="_blank">Nouval Trezandy</a>.
                     </span>
                 </div>
                 <div class="md:w-1/2 flex md:justify-end items-center">

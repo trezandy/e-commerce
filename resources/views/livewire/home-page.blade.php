@@ -290,39 +290,99 @@
                                     src="{{ asset('storage/' . $product->image) }}" alt="Grocery Ecommerce Template"
                                     class="w-full h-auto" /></a>
                         </div>
-                        <div class="flex flex-col gap-3">
-                            <a href="#!" class="text-decoration-none text-gray-500"><small>{{
-                                    $product->category->name }}</small></a>
-                            <div class="flex flex-col gap-2">
-                                <h3 class="text-base truncate"><a href="{{ route('product.show', $product->slug) }}">{{
-                                        $product->name }}</a>
-                                </h3>
+                        <div class="flex flex-col gap-1">
+                            <div class="gap-3 mb-3">
+                                <a href="#!" class="text-decoration-none text-gray-500">
+                                    <small>{{
+                                        $product->category->name }}
+                                    </small>
+                                </a>
+                                <div class="flex flex-col gap-2">
+                                    <h3 class="text-base truncate"><a
+                                            href="{{ route('product.show', $product->slug) }}">{{
+                                            $product->name }}</a>
+                                    </h3>
+                                </div>
                             </div>
                             <div class="flex justify-between items-center">
                                 <div>
+                                    @if($product->variants->isNotEmpty())
+                                    {{-- JIKA ADA VARIAN --}}
+                                    <div class="flex flex-col">
+                                        <span class="text-sm text-red-500">mulai dari</span>
+                                        <span class="text-gray-900 font-semibold">Rp {{
+                                            number_format($product->variants->min('price'), 0, ',', '.') }}</span>
+                                    </div>
+                                    @else
+                                    {{-- JIKA TIDAK ADA VARIAN --}}
+                                    @if($product->sale_price)
+                                    {{-- Jika ada harga diskon --}}
+                                    <div class="flex flex-col">
+                                        <span class="text-sm text-red-500 line-through">Rp {{
+                                            number_format($product->price, 0, ',', '.') }}</span>
+                                        <span class="text-gray-900 font-semibold">Rp {{
+                                            number_format($product->sale_price, 0, ',', '.') }}</span>
+                                    </div>
+                                    @else
+                                    {{-- Jika hanya harga normal --}}
                                     <span class="text-gray-900 font-semibold">Rp {{ number_format($product->price,
-                                        0, ',', '.') }}</span>
+                                        0,
+                                        ',', '.') }}</span>
+                                    @endif
+                                    @endif
+
                                 </div>
                                 <div>
-                                    {{-- Kondisi untuk mengecek stok --}}
-                                    @if ($product->stock > 0)
-                                    <button type="button"
-                                        wire:click.prevent="$dispatch('add-to-cart', { productId: {{ $product->id }} })"
-                                        class="btn inline-flex items-center gap-x-1 bg-green-600 text-white border-green-600 disabled:opacity-50 disabled:pointer-events-none hover:text-white hover:bg-green-700 hover:border-green-700 active:bg-green-700 active:border-green-700 focus:outline-none focus:ring-4 focus:ring-green-300 btn-sm">
-                                        <svg xmlns="http://www.w3.org/2000/svg"
-                                            class="icon icon-tabler icon-tabler-plus" width="14" height="14"
-                                            viewBox="0 0 24 24" stroke-width="3" stroke="currentColor" fill="none"
-                                            stroke-linecap="round" stroke-linejoin="round">
-                                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                            <path d="M12 5l0 14" />
-                                            <path d="M5 12l14 0" />
-                                        </svg>
-                                        <span>Beli</span>
-                                    </button>
-                                    @else
-                                    <span class="text-xs font-semibold text-red-600 bg-red-100 px-2 py-1 rounded-full">
-                                        Habis</span>
-                                    @endif
+                                    <div>
+                                        {{-- Tentukan aksi berdasarkan apakah produk punya varian --}}
+                                        {{-- Cek apakah produk memiliki varian --}}
+                                        @if($product->variants->isNotEmpty())
+                                        {{-- JIKA YA: Tampilkan tombol 'Pilih Opsi' yang mengarah ke halaman detail
+                                        --}}
+                                        <a href="{{ route('product.show', $product->slug) }}" wire:navigate
+                                            class="btn inline-flex items-center gap-x-1 bg-green-600 text-white border-green-600 btn-sm">
+                                            {{-- Pilih Opsi --}}
+                                            {{-- <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4"
+                                                viewBox="0 0 20 20" fill="currentColor">
+                                                <path d="M10 12a2 2 0 100-4 2 2 0 000 4z" />
+                                                <path fill-rule="evenodd"
+                                                    d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.522 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z"
+                                                    clip-rule="evenodd" />
+                                            </svg>
+                                            <span>Pilih Opsi</span> --}}
+
+                                            <svg xmlns="http://www.w3.org/2000/svg"
+                                                class="icon icon-tabler icon-tabler-plus" width="14" height="14"
+                                                viewBox="0 0 24 24" stroke-width="3" stroke="currentColor" fill="none"
+                                                stroke-linecap="round" stroke-linejoin="round">
+                                                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                                <path d="M12 5l0 14" />
+                                                <path d="M5 12l14 0" />
+                                            </svg>
+                                            <span>Beli</span>
+                                        </a>
+                                        @else
+                                        {{-- JIKA TIDAK: Tampilkan tombol 'Beli' atau 'Habis' seperti biasa --}}
+                                        @if ($product->stock > 0)
+                                        <button type="button"
+                                            wire:click.prevent="$dispatch('add-to-cart-with-quantity', { productId: {{ $product->id }}, quantity: 1 })"
+                                            class="btn inline-flex items-center gap-x-1 bg-green-600 text-white border-green-600 btn-sm">
+                                            <svg xmlns="http://www.w3.org/2000/svg"
+                                                class="icon icon-tabler icon-tabler-plus" width="14" height="14"
+                                                viewBox="0 0 24 24" stroke-width="3" stroke="currentColor" fill="none"
+                                                stroke-linecap="round" stroke-linejoin="round">
+                                                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                                <path d="M12 5l0 14" />
+                                                <path d="M5 12l14 0" />
+                                            </svg>
+                                            <span>Beli</span>
+                                        </button>
+                                        @else
+                                        <span
+                                            class="text-xs font-semibold text-red-600 bg-red-100 px-2 py-1 rounded-full">Habis</span>
+                                        @endif
+                                        @endif
+                                    </div>
                                 </div>
                             </div>
                         </div>

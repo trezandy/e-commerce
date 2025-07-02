@@ -65,7 +65,8 @@ class AuthModal extends Component
 
         // Tutup modal dan redirect
         $this->dispatch('close-modal', 'authModal');
-        return $this->redirect(route('home'), navigate: true);
+        // return $this->redirect(route('home'), navigate: true);
+        return $this->redirect(request()->header('Referer'), navigate: true);
     }
 
     /**
@@ -87,6 +88,7 @@ class AuthModal extends Component
         session()->regenerate();
 
         $this->dispatch('close-modal', 'authModal');
-        return $this->redirect(route('home'), navigate: true);
+        // return $this->redirect(route('home'), navigate: true);
+        return $this->redirect(request()->header('Referer'), navigate: true);
     }
 }

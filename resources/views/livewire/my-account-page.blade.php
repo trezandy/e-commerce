@@ -72,17 +72,16 @@
 
                         <div class="block w-full overflow-auto scrolling-touch">
                             <!-- Table -->
-                            <table class="w-full max-w-full bg-transparent whitespace-nowrap">
+                            <table class="w-full max-w-full bg-transparent">
                                 <!-- Table Head -->
                                 <thead class="bg-gray-100">
                                     <tr class="border-gray-300 border-b">
                                         <th class="py-3 pl-6 text-left">Product</th>
-                                        <th class="py-3 pl-6 text-left">Order</th>
                                         <th class="py-3 pl-6 text-left">Date</th>
                                         <th class="py-3 pl-6 text-left">Items</th>
-                                        {{-- <th class="py-3 pl-6 text-left">Payment</th> --}}
-                                        <th class="py-3 pl-6 text-left">Status</th>
                                         <th class="py-3 pl-6 text-left">Amount</th>
+                                        <th class="py-3 pl-6 text-left">Payment</th>
+                                        <th class="py-3 pl-6 text-left">Status</th>
                                         <th></th>
                                     </tr>
                                 </thead>
@@ -92,7 +91,7 @@
                                         <td class="align-middle px-6 py-3">
                                             @if ($order->items->isNotEmpty() && $order->items->first()->product)
                                             <a href="{{ route('order.detail', $order) }}"
-                                                class="flex items-center text-inherit">
+                                                class="flex items-center text-\">
                                                 <img src="{{ url('storage/' . $order->items->first()->product->image) }}"
                                                     alt="{{ $order->items->first()->product->name }}"
                                                     class="w-16 h-16 rounded" />
@@ -109,19 +108,20 @@
                                             <span class="text-gray-400">Product not available</span>
                                             @endif
                                         </td>
-                                        <td class="align-middle px-6 py-3">#{{ $order->id }}</td>
                                         <td class="align-middle px-6 py-3">{{ $order->created_at->format('M d, Y') }}
                                         </td>
                                         <td class="align-middle px-6 py-3">{{ $order->items->sum('quantity') }}</td>
-                                        {{-- <td class="align-middle px-6 py-3">
+                                        <td class="align-middle px-6 py-3">Rp{{ number_format($order->grand_total, 0,
+                                            ',', '.') }}</td>
+                                        <td class="align-middle px-6 py-3">
                                             <span class="inline-block p-1 px-2 text-xs align-baseline leading-none rounded-md font-semibold
                                                 @if($order->payment_status == 'paid') bg-green-100 text-green-800
-                                                @elseif($order->payment_status == 'pending') bg-yellow-100 text-yellow-800
-                                                @else bg-red-100 text-red-800
+                                                @elseif($order->payment_status == 'failed') bg-red-100 text-red-800 
+                                                @else bg-gray-200 text-gray-800
                                                 @endif">
                                                 {{ ucfirst($order->payment_status) }}
                                             </span>
-                                        </td> --}}
+                                        </td>
                                         <td class="align-middle px-6 py-3">
                                             <span class="inline-block p-1 px-2 text-xs align-baseline leading-none rounded-md font-semibold
                                                     @if($order->status == 'processing') bg-yellow-100 text-yellow-800 @endif
@@ -131,8 +131,6 @@
                                                 {{ ucfirst($order->status) }}
                                             </span>
                                         </td>
-                                        <td class="align-middle px-6 py-3">Rp{{ number_format($order->grand_total, 0,
-                                            ',', '.') }}</td>
                                         <td class="text-gray-500 align-middle px-6 py-3">
                                             {{-- LOGIKA KONDISIONAL BARU --}}
                                             @if ($order->payment_method == 'bank' && $order->payment_status != 'paid')

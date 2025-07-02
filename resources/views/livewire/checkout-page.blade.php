@@ -37,7 +37,7 @@
                     <div class="w-full mb-6">
                         <h1 class="text-xl">Checkout</h1>
                         @auth
-                        <p>Hai, <span class="font-semibold text-green-600">{{ Auth::user()->name }}</span>!
+                        <p>Hai, <span class="font-semibold text-green-600">{{ Auth::user()->name }}</span>.
                             Silakan lengkapi informasi di bawah ini untuk menyelesaikan
                             pesanan Anda.</p>
 
@@ -54,50 +54,64 @@
                         <div class="lg:w-3/5 md:w-full">
                             <div class="accordion accordion-flush" id="accordionFlushExample">
                                 {{-- Item 1: Alamat Pengiriman --}}
-                                <div class="mt-4 flex flex-col gap-4">
-                                    <div>
-                                        <label for="full_name" class="mb-2 block text-sm font-medium">Nama
-                                            Penerima</label>
-                                        <input type="text" id="full_name" wire:model.defer="full_name"
-                                            class="border border-gray-300 text-gray-900 rounded-lg focus:ring-green-600 focus:border-green-600 block w-full p-2.5"
-                                            placeholder="Masukkan Nama Lengkap">
-                                        @error('full_name') <span class="text-red-500 text-sm mt-1">{{ $message
-                                            }}</span> @enderror
-                                    </div>
-                                    <div>
-                                        <label for="email" class="mb-2 block text-sm font-medium">Alamat Email</label>
-                                        <input type="email" id="email" wire:model.defer="email"
-                                            class="border border-gray-300 text-gray-900 rounded-lg focus:ring-green-600 focus:border-green-600 block w-full p-2.5"
-                                            placeholder="Masukkan Alamat Email">
-                                        @error('email') <span class="text-red-500 text-sm mt-1">{{ $message }}</span>
-                                        @enderror
-                                    </div>
-                                    <div>
-                                        <label for="phone_number" class="mb-2 block text-sm font-medium">Nomor
-                                            Telepon</label>
-                                        <input type="tel" id="phone_number" wire:model.defer="phone_number"
-                                            class="border border-gray-300 text-gray-900 rounded-lg focus:ring-green-600 focus:border-green-600 block w-full p-2.5"
-                                            placeholder="Masukkan Nomor Telepon">
-                                        @error('phone_number') <span class="text-red-500 text-sm mt-1">{{ $message
-                                            }}</span> @enderror
-                                    </div>
-                                    <div>
-                                        <label for="shipping_address" class="mb-2 block text-sm font-medium">Alamat
-                                            Lengkap Pengiriman</label>
-                                        <textarea id="shipping_address" wire:model.defer="shipping_address"
-                                            class="border border-gray-300 text-gray-900 rounded-lg focus:ring-green-600 focus:border-green-600 block w-full p-2.5"
-                                            rows="3"
-                                            placeholder="Contoh: Jl. Sudirman No. 123, Kel. Suka Maju, Kec. Damai, Kota Palu."></textarea>
-                                        @error('shipping_address') <span class="text-red-500 text-sm mt-1">{{ $message
-                                            }}</span> @enderror
+                                <div class="border-b border-gray-300 py-4">
+                                    <a href="#" class="flex flex-row gap-2 items-center text-gray-900 text-md font-bold"
+                                        data-bs-toggle="collapse" data-bs-target="#flush-collapseOne"
+                                        aria-expanded="false" aria-controls="flush-collapseOne">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                            stroke-linecap="round" stroke-linejoin="round"
+                                            class="icon icon-tabler icons-tabler-outline icon-tabler-user-check inline-block text-gray-500">
+                                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                            <path d="M8 7a4 4 0 1 0 8 0a4 4 0 0 0 -8 0" />
+                                            <path d="M6 21v-2a4 4 0 0 1 4 -4h4" />
+                                            <path d="M15 19l2 2l4 -4" />
+                                        </svg>
+                                        Data Penerima
+                                    </a>
+                                    <div id="flush-collapseOne" class="accordion-collapse collapse show"
+                                        data-bs-parent="#accordionFlushExample">
+                                        <div class="mt-4 flex flex-col gap-4">
+                                            <div>
+                                                <label for="full_name" class="mb-2 block text-sm font-medium">Nama
+                                                    Lengkap</label>
+                                                <input type="text" id="full_name" wire:model.defer="full_name"
+                                                    class="border border-gray-300 text-gray-900 rounded-lg focus:ring-green-600 focus:border-green-600 block w-full p-2.5"
+                                                    placeholder="Masukkan Nama Lengkap">
+                                                @error('full_name') <span class="text-red-500 text-sm mt-1">{{ $message
+                                                    }}</span> @enderror
+                                            </div>
+                                            <div>
+                                                <label for="phone_number" class="mb-2 block text-sm font-medium">Nomor
+                                                    Telepon</label>
+                                                <input type="tel" id="phone_number" wire:model.defer="phone_number"
+                                                    class="border border-gray-300 text-gray-900 rounded-lg focus:ring-green-600 focus:border-green-600 block w-full p-2.5"
+                                                    placeholder="Masukkan Nomor Telepon">
+                                                @error('phone_number') <span class="text-red-500 text-sm mt-1">{{
+                                                    $message
+                                                    }}</span> @enderror
+                                            </div>
+                                            <div>
+                                                <label for="shipping_address"
+                                                    class="mb-2 block text-sm font-medium">Alamat
+                                                    Lengkap Pengiriman</label>
+                                                <textarea id="shipping_address" wire:model.defer="shipping_address"
+                                                    class="border border-gray-300 text-gray-900 rounded-lg focus:ring-green-600 focus:border-green-600 block w-full p-2.5"
+                                                    rows="3"
+                                                    placeholder="Contoh: Jl. Sudirman No. 123, Kel. Suka Maju, Kec. Damai, Kota Palu."></textarea>
+                                                @error('shipping_address') <span class="text-red-500 text-sm mt-1">{{
+                                                    $message
+                                                    }}</span> @enderror
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
 
                                 {{-- Item 2: Instruksi Pengiriman --}}
                                 <div class="border-b border-gray-300 py-4">
                                     <a href="#" class="flex flex-row gap-2 items-center text-gray-900 text-md font-bold"
-                                        data-bs-toggle="collapse" data-bs-target="#flush-collapseThree"
-                                        aria-expanded="false" aria-controls="flush-collapseThree">
+                                        data-bs-toggle="collapse" data-bs-target="#flush-collapseTwo"
+                                        aria-expanded="false" aria-controls="flush-collapseTwo">
                                         <svg xmlns="http://www.w3.org/2000/svg"
                                             class="icon icon-tabler icon-tabler-shopping-bag inline-block text-gray-500"
                                             width="20" height="20" viewBox="0 0 24 24" stroke-width="1.5"
@@ -110,7 +124,7 @@
                                         </svg>
                                         Catatan Pengiriman
                                     </a>
-                                    <div id="flush-collapseThree" class="accordion-collapse collapse"
+                                    <div id="flush-collapseTwo" class="accordion-collapse collapse"
                                         data-bs-parent="#accordionFlushExample">
                                         <div class="my-6">
                                             <textarea wire:model.defer="delivery_instructions"
@@ -123,8 +137,8 @@
                                 {{-- Item 3: Metode Pembayaran --}}
                                 <div class="py-4">
                                     <a href="#" class="flex flex-row gap-2 items-center text-gray-900 text-md font-bold"
-                                        data-bs-toggle="collapse" data-bs-target="#flush-collapseFour"
-                                        aria-expanded="false" aria-controls="flush-collapseFour">
+                                        data-bs-toggle="collapse" data-bs-target="#flush-collapseThree"
+                                        aria-expanded="false" aria-controls="flush-collapseThree">
                                         <svg xmlns="http://www.w3.org/2000/svg"
                                             class="icon icon-tabler icon-tabler-credit-card inline-block text-gray-500"
                                             width="20" height="20" viewBox="0 0 24 24" stroke-width="1.5"
@@ -139,7 +153,7 @@
                                         </svg>
                                         Metode Pembayaran
                                     </a>
-                                    <div id="flush-collapseFour" class="accordion-collapse collapse"
+                                    <div id="flush-collapseThree" class="accordion-collapse collapse"
                                         data-bs-parent="#accordionFlushExample">
                                         <div class="mt-6 flex flex-col gap-4">
                                             <div class="card p-6">
@@ -149,7 +163,8 @@
                                                         name="payment_method_radio" id="bankTransfer" />
                                                     <div class="flex flex-col gap-1">
                                                         <h5 class="text-base">Transfer Bank</h5>
-                                                        <p class="text-sm">Anda akan menerima nomor rekening setelah
+                                                        <p class="text-sm">Anda akan menerima nomor rekening
+                                                            setelah
                                                             membuat pesanan.</p>
                                                     </div>
                                                 </div>
@@ -162,17 +177,19 @@
                                                         name="payment_method_radio" id="midtransPayment" />
                                                     <div class="flex flex-col gap-1">
                                                         <h5 class="text-base">Online Payment</h5>
-                                                        <p class="text-sm">Bayar dengan Kartu Kredit, QRIS, GoPay,
+                                                        <p class="text-sm">Bayar dengan Kartu Kredit, QRIS,
+                                                            GoPay,
                                                             Virtual Account, dll.</p>
                                                     </div>
                                                 </div>
                                             </div>
-                                            @error('payment_method') <span class="text-red-500 text-sm">{{ $message
+                                            @error('payment_method') <span class="text-red-500 text-sm">{{
+                                                $message
                                                 }}</span> @enderror
                                             <div class="flex justify-end">
                                                 <button type="submit"
-                                                    class="ml-3 btn inline-flex items-center gap-x-2 bg-green-600 text-white border-green-600">Place
-                                                    Order</button>
+                                                    class="ml-3 btn inline-flex items-center gap-x-2 bg-green-600 text-white border-green-600">Buat
+                                                    Pesanan</button>
                                             </div>
                                         </div>
                                     </div>
@@ -194,6 +211,10 @@
                                                         alt="{{ $item['name'] }}" class="w-10" /></div>
                                                 <div class="w-2/5 md:w-2/5 flex flex-col flex-wrap gap-1">
                                                     <h6>{{ $item['name'] }}</h6>
+                                                    @if($item['variant_name'])
+                                                    <span class="text-gray-500 text-sm">{{ $item['variant_name']
+                                                        }}</span>
+                                                    @endif
                                                 </div>
                                                 <div class="w-1/5 md:w-1/5 text-center text-gray-700"><span>x{{
                                                         $item['quantity'] }}</span></div>
@@ -207,7 +228,8 @@
                                         <li class="py-3 px-6 border-b border-gray-300 flex flex-col gap-2">
                                             <div class="flex items-center justify-between">
                                                 <div>Harga Produk</div>
-                                                <div class="font-bold text-gray-800">Rp {{ number_format($sub_total, 0,
+                                                <div class="font-bold text-gray-800">Rp {{
+                                                    number_format($sub_total, 0,
                                                     ',', '.') }}
                                                 </div>
                                             </div>
@@ -222,20 +244,24 @@
                                                             stroke-width="2" stroke-linecap="round"
                                                             stroke-linejoin="round"
                                                             class="icon icon-tabler icons-tabler-outline icon-tabler-info-circle">
-                                                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                                                            <path d="M3 12a9 9 0 1 0 18 0a9 9 0 0 0 -18 0"></path>
+                                                            <path stroke="none" d="M0 0h24v24H0z" fill="none">
+                                                            </path>
+                                                            <path d="M3 12a9 9 0 1 0 18 0a9 9 0 0 0 -18 0">
+                                                            </path>
                                                             <path d="M12 9h.01"></path>
                                                             <path d="M11 12h1v4h1"></path>
                                                         </svg>
                                                     </span>
                                                 </div>
-                                                <div class="font-bold text-gray-800">Rp {{ number_format($service_fee,
+                                                <div class="font-bold text-gray-800">Rp {{
+                                                    number_format($service_fee,
                                                     0,
                                                     ',', '.') }}</div>
                                             </div>
                                         </li>
                                         <li class="py-3 px-6 ">
-                                            <div class="flex items-center justify-between font-bold text-green-600 ">
+                                            <div
+                                                class="flex items-center justify-between font-bold text-md text-green-600 ">
                                                 <div>Total Bayar</div>
                                                 <div>Rp {{ number_format($grand_total, 0,
                                                     ',', '.') }}</div>

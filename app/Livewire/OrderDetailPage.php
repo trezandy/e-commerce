@@ -3,10 +3,13 @@
 namespace App\Livewire;
 
 use App\Models\Order;
-use Illuminate\Support\Facades\Storage; // <-- Tambahkan ini
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Log;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 use Livewire\Attributes\Layout;
+use Midtrans\Config;
+use Midtrans\Snap;
 
 #[Layout('components.layouts.app')]
 class OrderDetailPage extends Component
@@ -19,6 +22,82 @@ class OrderDetailPage extends Component
     /**
      * Metode untuk menangani proses unggah bukti pembayaran.
      */
+
+    public function cancelOrder()
+    {
+        // Hanya izinkan pembatalan jika status masih pending
+        if ($this->order->status === 'pending' && $this->order->payment_status === 'pending') {
+            $this->order->update(['status' => 'cancelled']);
+
+            // Pengembalian stok akan dihandle secara otomatis oleh OrderObserver
+
+            $this->dispatch('swal:toast', [
+                'type' => 'success',
+                'title' => 'Pesanan berhasil dibatalkan.'
+            ]);
+
+            return $this->redirect(route('my-account.index'), navigate: true);
+        }
+    }
+
+    /**
+     * Metode untuk membayar ulang dengan Midtrans.
+     */
+    public function retryMidtransPayment()
+    {
+        // Konfigurasi Midtrans
+        Config::$serverKey = config('services.midtrans.server_key');
+        Config::$isProduction = config('services.midtrans.is_production', false);
+        Config::$isSanitized = true;
+        Config::$is3ds = true;
+
+        // Buat detail item untuk dikirim ke Midtrans
+        $midtransItems = [];
+        foreach ($this->order->items as $item) {
+            $itemName = $item->product->name;
+            if ($item->variant) {
+                $itemName .= ' (' . $item->variant->name . ')';
+            }
+            $midtransItems[] = [
+                'id' => 'item-' . $item->id,
+                'price' => (int) $item->price,
+                'quantity' => (int) $item->quantity,
+                'name' => $itemName
+            ];
+        }
+
+        // Tambahkan biaya layanan jika ada (sekarang diambil dari DB)
+        if ($this->order->service_fee > 0) {
+            $midtransItems[] = [
+                'id' => 'SERVICE_FEE',
+                'price' => (int) $this->order->service_fee,
+                'quantity' => 1,
+                'name' => 'Biaya Layanan'
+            ];
+        }
+
+        // Buat ID transaksi unik untuk percobaan ini
+        $retryOrderId = $this->order->order_number . '-' . time();
+
+        $params = [
+            'transaction_details' => [
+                'order_id' => $retryOrderId,
+                'gross_amount' => (int) $this->order->grand_total,
+            ],
+            'item_details' => $midtransItems,
+            'customer_details' => [ /* ... detail pelanggan ... */],
+        ];
+
+        try {
+            $snapToken = Snap::getSnapToken($params);
+            // Langsung kirim token ke frontend tanpa menyimpan apa pun
+            $this->dispatch('snap-redirect', token: $snapToken);
+        } catch (\Exception $e) {
+            Log::error('Midtrans Snap Token Error on Retry: ' . $e->getMessage());
+            $this->dispatch('swal:toast', ['type' => 'error', 'title' => 'Gagal memproses pembayaran.']);
+        }
+    }
+
     public function uploadProof()
     {
         // 1. Validasi file yang diunggah

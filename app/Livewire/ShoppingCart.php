@@ -3,6 +3,7 @@
 namespace App\Livewire;
 
 use App\Models\Product;
+use App\Models\ProductVariant; // Import model baru
 use Livewire\Component;
 use Livewire\Attributes\On;
 
@@ -16,140 +17,101 @@ class ShoppingCart extends Component
         $this->updateCart();
     }
 
-    #[On('add-to-cart')]
-    public function addToCart($productId)
+    // Fungsi ini sekarang menjadi fungsi utama untuk menambahkan item
+    #[On('add-to-cart-with-quantity')]
+    public function addToCart($productId, $variantId = null, $quantity = 1)
     {
         $product = Product::find($productId);
-        if (!$product) {
-            return; // Produk tidak ditemukan
+        if (!$product) return;
+
+        $variant = null;
+        if ($variantId) {
+            $variant = ProductVariant::find($variantId);
+            if (!$variant) return;
         }
 
-        // Jika stok habis, jangan lakukan apa-apa dan kirim notifikasi
-        if ($product->stock <= 0) {
+        // Tentukan stok dan harga berdasarkan ada atau tidaknya varian
+        $stock = $variant ? $variant->stock : $product->stock;
+        $price = $variant ? ($variant->sale_price ?? $variant->price) : ($product->sale_price ?? $product->price);
+        $variantName = $variant ? $variant->name : null;
+
+        // Validasi stok
+        if ($stock <= 0) {
             $this->dispatch('swal:toast', ['type' => 'error', 'title' => 'Stok produk habis.']);
             return;
         }
 
-        $cart = session()->get('cart', []);
+        // Buat kunci unik untuk item di keranjang
+        // Contoh: "1-5" (produkID 1, varianID 5) atau "2-null" (produkID 2, tanpa varian)
+        $cartKey = $productId . '-' . ($variantId ?? 'null');
 
-        // Cek kuantitas di keranjang vs stok produk
-        $quantityInCart = isset($cart[$productId]) ? $cart[$productId]['quantity'] : 0;
-        if ($quantityInCart >= $product->stock) {
+        $cart = session()->get('cart', []);
+        $quantityInCart = isset($cart[$cartKey]) ? $cart[$cartKey]['quantity'] : 0;
+
+        if (($quantityInCart + $quantity) > $stock) {
             $this->dispatch('swal:toast', ['type' => 'error', 'title' => 'Stok tidak mencukupi.']);
             return;
         }
 
-        // Jika semua aman, tambahkan ke keranjang
-        if (isset($cart[$productId])) {
-            $cart[$productId]['quantity']++;
+        // Tambahkan atau perbarui item di keranjang
+        if (isset($cart[$cartKey])) {
+            $cart[$cartKey]['quantity'] += $quantity;
         } else {
-            $cart[$productId] = [
+            $cart[$cartKey] = [
+                "product_id" => $product->id,
+                "variant_id" => $variantId,
                 "name" => $product->name,
-                "quantity" => 1,
-                "price" => $product->price,
+                "variant_name" => $variantName,
+                "quantity" => $quantity,
+                "price" => $price,
                 "image" => $product->image
             ];
         }
+
         session()->put('cart', $cart);
         $this->updateCart();
-
         $this->dispatch('swal:toast', ['type' => 'success', 'title' => 'Ditambahkan ke keranjang.']);
     }
 
-    #[On('add-to-cart-with-quantity')]
-    public function addToCartWithQuantity($productId, $quantity = 1)
+    public function increaseQuantity($cartKey)
     {
-        $product = Product::find($productId);
-        if (!$product) {
-            return; // Produk tidak ditemukan
-        }
-
-        // Jika stok habis, jangan lakukan apa-apa
-        if ($product->stock <= 0) {
-            $this->dispatch('swal:toast', ['type' => 'error', 'title' => 'Stok produk habis.']);
-            return;
-        }
-
+        // Logika sama seperti di atas, tapi untuk menambah 1
         $cart = session()->get('cart', []);
+        if (!isset($cart[$cartKey])) return;
 
-        // Ambil kuantitas yang sudah ada di keranjang
-        $quantityInCart = isset($cart[$productId]) ? $cart[$productId]['quantity'] : 0;
+        $item = $cart[$cartKey];
+        $product = Product::find($item['product_id']);
+        $variant = $item['variant_id'] ? ProductVariant::find($item['variant_id']) : null;
+        $stock = $variant ? $variant->stock : $product->stock;
 
-        // Hitung total kuantitas yang akan ada di keranjang
-        $totalQuantity = $quantityInCart + $quantity;
-
-        // Cek apakah total kuantitas melebihi stok yang tersedia
-        if ($totalQuantity > $product->stock) {
+        if (($item['quantity'] + 1) > $stock) {
             $this->dispatch('swal:toast', ['type' => 'error', 'title' => 'Stok tidak mencukupi.']);
             return;
         }
 
-        // Jika semua aman, tambahkan ke keranjang
-        if (isset($cart[$productId])) {
-            $cart[$productId]['quantity'] += $quantity;
-        } else {
-            $cart[$productId] = [
-                "name" => $product->name,
-                "quantity" => $quantity,
-                "price" => $product->price,
-                "image" => $product->image
-            ];
-        }
-
+        $cart[$cartKey]['quantity']++;
         session()->put('cart', $cart);
         $this->updateCart();
-
-        $this->dispatch('swal:toast', [
-            'type' => 'success',
-            'title' => 'Ditambahkan ke keranjang.'
-        ]);
     }
 
-    public function decreaseQuantity($productId)
+    public function decreaseQuantity($cartKey)
     {
         $cart = session()->get('cart', []);
-
-        if (isset($cart[$productId])) {
-            // Hanya kurangi jika kuantitas lebih dari 1
-            if ($cart[$productId]['quantity'] > 1) {
-                $cart[$productId]['quantity']--;
-                session()->put('cart', $cart);
-                $this->updateCart();
-            }
-        }
-    }
-
-    // -- METHOD BARU UNTUK MENAMBAH KUANTITAS --
-    public function increaseQuantity($productId)
-    {
-        $cart = session()->get('cart', []);
-        $product = Product::find($productId);
-
-        if (isset($cart[$productId]) && $product) {
-            // Cek apakah penambahan kuantitas akan melebihi stok
-            if (($cart[$productId]['quantity'] + 1) > $product->stock) {
-                $this->dispatch('swal:toast', ['type' => 'error', 'title' => 'Stok tidak mencukupi.']);
-                return;
-            }
-            $cart[$productId]['quantity']++;
+        if (isset($cart[$cartKey]) && $cart[$cartKey]['quantity'] > 1) {
+            $cart[$cartKey]['quantity']--;
             session()->put('cart', $cart);
             $this->updateCart();
         }
     }
 
-    public function removeItem($productId)
+    public function removeItem($cartKey)
     {
         $cart = session()->get('cart', []);
-
-        if (isset($cart[$productId])) {
-            unset($cart[$productId]);
+        if (isset($cart[$cartKey])) {
+            unset($cart[$cartKey]);
             session()->put('cart', $cart);
             $this->updateCart();
-
-            $this->dispatch('swal:toast', [
-                'type' => 'success',
-                'title' => 'Dihapus dari keranjang.'
-            ]);
+            $this->dispatch('swal:toast', ['type' => 'success', 'title' => 'Dihapus dari keranjang.']);
         }
     }
 

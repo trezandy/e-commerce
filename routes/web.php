@@ -18,7 +18,7 @@ Route::get('/product/{product:slug}', [ProductController::class, 'show'])->name(
 Route::post('/midtrans-webhook', [MidtransWebhookController::class, 'handle']);
 
 Route::middleware('auth')->group(function () {
-    Route::get('/order/{order}', OrderDetailPage::class)->name('order.detail');
+    Route::get('/order/{order:order_number}', OrderDetailPage::class)->name('order.detail');
     Route::get('/my-account', MyAccountPage::class)->name('my-account.index');
 });
 

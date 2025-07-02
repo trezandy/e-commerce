@@ -16,16 +16,25 @@ class DatabaseSeeder extends Seeder
     {
         // User::factory(10)->create();
 
-        User::factory()->create([
-            'name' => 'Admin',
-            'email' => 'admin@e-commerce.test',
-            'password' => bcrypt('admin'),
-            'role' => UserRole::ADMIN,
+        User::factory()->createMany([
+            [
+                'name' => 'Admin E-Commerce',
+                'email' => 'admin@e-commerce.test',
+                'password' => bcrypt('admin'),
+                'role' => UserRole::ADMIN,
+            ],
+            [
+                'name' => 'Nouval Trezandy',
+                'email' => 'nouval@gmail.com',
+                'password' => bcrypt('password'),
+                'role' => UserRole::CUSTOMER,
+            ],
         ]);
 
-        // Panggil seeder yang baru kita buat
+        // Panggil seeder yang dibuat
         $this->call([
             ProductAndCategorySeeder::class,
+            ProductVariantSeeder::class,
         ]);
     }
 }

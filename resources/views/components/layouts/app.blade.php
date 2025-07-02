@@ -106,6 +106,18 @@
                     }
                 }
             });
+
+            // Listener untuk membuka modal login/register secara paksa
+            Livewire.on('open-auth-modal', () => {
+                const authModalElement = document.getElementById('authModal');
+                if (authModalElement) {
+                    // Gunakan API Bootstrap 5 untuk menampilkan modal
+                    const modal = new bootstrap.Modal(authModalElement);
+                    modal.show();
+                }
+            });
+
+            
         });
     </script>
 

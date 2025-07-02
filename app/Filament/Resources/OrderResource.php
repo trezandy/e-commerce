@@ -8,6 +8,7 @@ use App\Models\Order;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Infolists\Components;
+use Filament\Infolists\Components\TextEntry;
 use Filament\Infolists\Infolist;
 use Filament\Resources\Resource;
 use Filament\Tables;
@@ -54,7 +55,7 @@ class OrderResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('id')->label('Order ID')->searchable(),
+                Tables\Columns\TextColumn::make('order_number')->label('Order ID')->searchable(),
                 Tables\Columns\TextColumn::make('user.name')->label('Customer')->searchable(),
                 Tables\Columns\TextColumn::make('status')->badge()->color(fn(string $state): string => match ($state) {
                     'pending' => 'gray',
@@ -62,14 +63,19 @@ class OrderResource extends Resource
                     'completed' => 'success',
                     'cancelled' => 'danger',
                 })->searchable(),
-                Tables\Columns\TextColumn::make('payment_method')
-                    ->label('Payment Method')
-                    ->searchable()
-                    ->formatStateUsing(fn(string $state): string => match ($state) {
-                        'bank' => 'Bank Transfer',
-                        'midtrans' => 'Online Payment',
-                        default => $state,
-                    }),
+                Tables\Columns\TextColumn::make('payment_status')->label('Payment')->badge()->color(fn(string $state): string => match ($state) {
+                    'pending' => 'gray',
+                    'paid' => 'success',
+                    'failed' => 'danger',
+                })->searchable(),
+                // Tables\Columns\TextColumn::make('payment_method')
+                //     ->label('Payment Method')
+                //     ->searchable()
+                //     ->formatStateUsing(fn(string $state): string => match ($state) {
+                //         'bank' => 'Bank Transfer',
+                //         'midtrans' => 'Online Payment',
+                //         default => $state,
+                //     }),
                 Tables\Columns\TextColumn::make('grand_total')->label('Grand Total')->numeric()->sortable()->money('IDR'),
                 Tables\Columns\TextColumn::make('created_at')->label('Order Date')->dateTime()->sortable(),
             ])
@@ -126,6 +132,20 @@ class OrderResource extends Resource
                                         'midtrans' => 'Midtrans',
                                         default => $state,
                                     }),
+
+                                TextEntry::make('payment_channel')
+                                    ->label('Detail Pembayaran')
+                                    ->formatStateUsing(function ($state, Order $record): string {
+                                        // $state di sini adalah isi dari 'payment_channel'
+                                        $channel = match ($state) {
+                                            'bank_transfer' => ucwords(str_replace('_', ' ', $state)),
+                                            'qris' => strtoupper($state),
+                                            default => strtoupper(str_replace('_', ' ', $state)),
+                                        };
+                                        $provider = $record->payment_provider; // Ambil provider dari record
+                                        return trim("{$channel} - {$provider}");
+                                    }),
+
                             ]),
 
                             // Kolom 2: Shipping Address

@@ -3,15 +3,14 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\ProductResource\Pages;
-use App\Filament\Resources\ProductResource\RelationManagers;
+// Import Relation Manager yang baru dibuat
+use App\Filament\Resources\ProductResource\RelationManagers\VariantsRelationManager;
 use App\Models\Product;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Illuminate\Support\Str;
 use Filament\Forms\Set;
 
@@ -19,7 +18,6 @@ use Filament\Forms\Set;
 class ProductResource extends Resource
 {
     protected static ?string $model = Product::class;
-
     protected static ?string $navigationIcon = 'heroicon-o-shopping-bag';
 
     public static function form(Form $form): Form
@@ -27,47 +25,53 @@ class ProductResource extends Resource
         return $form
             ->schema([
                 Forms\Components\Group::make()->schema([
-                    Forms\Components\Section::make('Product Details')->schema([
-                        Forms\Components\TextInput::make('name')
+                    Forms\Components\Section::make('Detail Produk')->schema([
+                        Forms\Components\TextInput::make('name')->label('Nama Produk')
                             ->required()->maxLength(255)->live(onBlur: true)
                             ->afterStateUpdated(fn(Set $set, ?string $state) => $set('slug', Str::slug($state))),
 
                         Forms\Components\TextInput::make('slug')
-                            ->required()->maxLength(255)->unique(ignoreRecord: true),
+                            ->required()->maxLength(255)->unique(Product::class, 'slug', ignoreRecord: true),
 
                         Forms\Components\MarkdownEditor::make('description')
-                            ->columnSpanFull(), // Gunakan lebar penuh
+                            ->columnSpanFull(),
                     ])->columns(2),
 
-                    Forms\Components\Section::make('Pricing & Stock')->schema([
-                        Forms\Components\TextInput::make('price')
-                            ->numeric()->prefix('Rp')->required(),
-                        Forms\Components\TextInput::make('stock')
-                            ->numeric()->required(),
-                    ])->columns(2),
+                    // Modifikasi bagian ini
+                    Forms\Components\Section::make('Harga & Stok Default')
+                        ->description('Isi bagian ini jika produk tidak memiliki varian. Jika ada varian, harga dan stok akan diambil dari masing-masing varian.')
+                        ->schema([
+                            Forms\Components\TextInput::make('price')
+                                ->label('Harga Normal')
+                                ->numeric()->prefix('Rp')->nullable(),
+                            Forms\Components\TextInput::make('sale_price')
+                                ->label('Harga Diskon (Opsional)')
+                                ->numeric()->prefix('Rp')->nullable(),
+                            Forms\Components\TextInput::make('stock')
+                                ->label('Stok Utama')->numeric()->nullable(),
+                        ])->columns(3),
 
                 ])->columnSpan(2),
 
                 Forms\Components\Group::make()->schema([
-                    Forms\Components\Section::make('Category')->schema([
+                    Forms\Components\Section::make('Atribut')->schema([
                         Forms\Components\Select::make('category_id')
-                            ->relationship('category', 'name') // Ambil dari relasi 'category' dan tampilkan kolom 'name'
+                            ->relationship('category', 'name')
                             ->required(),
                     ]),
-                    Forms\Components\Section::make('Image')->schema([
+                    Forms\Components\Section::make('Gambar Utama')->schema([
                         Forms\Components\FileUpload::make('image')
-                            ->image() // Hanya terima file gambar
-                            ->directory('products'), // Simpan di folder storage/app/public/products
+                            ->image()
+                            ->disk('public')
+                            ->directory('products'),
                     ]),
-                    Forms\Components\Repeater::make('images')
-                        ->label('Image Gallery')
-                        ->schema([
-                            Forms\Components\FileUpload::make('path')
-                                ->label('Image')
-                                ->image(),
-                        ])
-                        ->maxItems(3) // <-- Batasan maksimal 3 gambar
-                        ->columnSpanFull(),
+                    Forms\Components\Section::make('Galeri Gambar')->schema([
+                        Forms\Components\FileUpload::make('images')
+                            ->multiple()
+                            ->image()
+                            ->maxFiles(3)
+                            ->directory('products'),
+                    ]),
                 ])->columnSpan(1),
             ])->columns(3);
     }
@@ -76,22 +80,13 @@ class ProductResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\ImageColumn::make('image'), // Tampilkan gambar
+                Tables\Columns\ImageColumn::make('image'),
                 Tables\Columns\TextColumn::make('name')->searchable(),
-                Tables\Columns\TextColumn::make('category.name') // Tampilkan nama dari relasi
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('price')
-                    ->formatStateUsing(fn($state) => 'Rp ' . number_format($state, 0, ',', '.'))
-                    // ->numeric()->prefix('Rp') // Format sebagai mata uang Rupiah
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('stock')
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('created_at')
-                    ->dateTime()
-                    ->sortable() // Buat kolom ini bisa diurutkan
-                    ->toggleable(isToggledHiddenByDefault: true), // Sembunyikan by default, bisa dimunculkan
+                Tables\Columns\TextColumn::make('category.name')->sortable(),
+                // Sembunyikan harga dan stok dari tabel utama karena sudah ada di varian
+                // Tables\Columns\TextColumn::make('price')->money('IDR')->sortable(),
+                // Tables\Columns\TextColumn::make('stock')->sortable(),
             ])
-            ->defaultSort('created_at', 'desc')
             ->filters([
                 //
             ])
@@ -105,10 +100,11 @@ class ProductResource extends Resource
             ]);
     }
 
+    // Daftarkan Relation Manager di sini
     public static function getRelations(): array
     {
         return [
-            //
+            VariantsRelationManager::class,
         ];
     }
 

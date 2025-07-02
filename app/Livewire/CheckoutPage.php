@@ -58,26 +58,54 @@ class CheckoutPage extends Component
      */
     public function placeOrder()
     {
+        // 0. Cek jika pengguna adalah tamu (guest)
+        if (Auth::guest()) {
+            // Beri notifikasi untuk login
+            // $this->dispatch('swal:toast', [
+            //     'type' => 'info',
+            //     'title' => 'Silakan masuk untuk melanjutkan pesanan.'
+            // ]);
+            // Kirim event untuk membuka modal login
+            $this->dispatch('open-auth-modal');
+            return; // Hentikan eksekusi lebih lanjut
+        }
+
         // 1. Validasi semua input dari form
         $this->validate([
             'full_name' => 'required|string|max:255',
-            'email' => 'required|email|max:255',
             'phone_number' => 'required|string|max:255',
             'shipping_address' => 'required|string|max:500',
             'payment_method' => 'required|in:bank,midtrans' // Pastikan hanya menerima 'bank' atau 'midtrans'
         ]);
 
         // 2. Cek stok setiap item di keranjang sebelum membuat pesanan
-        foreach ($this->cart_items as $productId => $item) {
-            $product = Product::find($productId);
-            // Jika stok produk di database lebih sedikit dari yang ingin dibeli
-            if ($product->stock < $item['quantity']) {
+        foreach ($this->cart_items as $cartKey => $item) {
+            $stock = 0;
+            $productName = $item['name'];
+
+            // Jika ada variant_id, cek stok varian
+            if ($item['variant_id']) {
+                $variant = \App\Models\ProductVariant::find($item['variant_id']);
+                if ($variant) {
+                    $stock = $variant->stock;
+                    $productName .= ' - ' . $variant->name;
+                }
+            }
+            // Jika tidak, cek stok produk utama
+            else {
+                $product = \App\Models\Product::find($item['product_id']);
+                if ($product) {
+                    $stock = $product->stock;
+                }
+            }
+
+            // Lakukan pengecekan
+            if ($stock < $item['quantity']) {
                 $this->dispatch('swal:toast', [
                     'type' => 'error',
-                    'title' => 'Stok untuk ' . $product->name . ' tidak mencukupi.'
+                    'title' => 'Stok untuk ' . $productName . ' tidak mencukupi. Harap perbarui keranjang Anda.'
                 ]);
-                // Hentikan proses checkout
-                return;
+                return; // Hentikan proses
             }
         }
 
@@ -85,6 +113,7 @@ class CheckoutPage extends Component
         $order = Order::create([
             'user_id' => Auth::id(),
             'grand_total' => $this->grand_total,
+            'service_fee' => $this->service_fee,
             'shipping_address' => $this->shipping_address,
             'phone_number' => $this->phone_number,
             'status' => 'pending',
@@ -93,9 +122,10 @@ class CheckoutPage extends Component
         ]);
 
         // 4. Simpan semua item dari keranjang ke dalam order_items
-        foreach ($this->cart_items as $productId => $item) {
+        foreach ($this->cart_items as $cartKey => $item) {
             $order->items()->create([
-                'product_id' => $productId,
+                'product_id' => $item['product_id'],
+                'product_variant_id' => $item['variant_id'], // <-- Simpan ID varian
                 'quantity' => $item['quantity'],
                 'price' => $item['price']
             ]);
@@ -124,12 +154,39 @@ class CheckoutPage extends Component
             Config::$isSanitized = true;
             Config::$is3ds = true;
 
+            $midtransItems = [];
+            foreach ($this->cart_items as $cartKey => $item) {
+                // Gabungkan nama produk dengan varian jika ada
+                $itemName = $item['name'];
+                if ($item['variant_name']) {
+                    $itemName .= ' (' . $item['variant_name'] . ')';
+                }
+
+                $midtransItems[] = [
+                    'id' => $cartKey, // Gunakan kunci unik keranjang sebagai ID
+                    'price' => $item['price'],
+                    'quantity' => $item['quantity'],
+                    'name' => $itemName
+                ];
+            }
+
+            // Jangan lupa tambahkan biaya layanan sebagai item terpisah
+            if ($this->service_fee > 0) {
+                $midtransItems[] = [
+                    'id' => 'BIAYA_LAYANAN',
+                    'price' => $this->service_fee,
+                    'quantity' => 1,
+                    'name' => 'Biaya Layanan'
+                ];
+            }
+
             // Buat parameter transaksi untuk Midtrans
             $params = [
                 'transaction_details' => [
-                    'order_id' => $order->id,
+                    'order_id' => $order->order_number,
                     'gross_amount' => $order->grand_total,
                 ],
+                'item_details' => $midtransItems,
                 'customer_details' => [
                     'first_name' => $this->full_name,
                     'email' => $this->email,

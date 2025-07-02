@@ -6,7 +6,7 @@
                 {{-- =================================================================== --}}
                 {{-- 1. TAMPILAN JIKA PEMBAYARAN SUDAH LUNAS (PAID) --}}
                 {{-- =================================================================== --}}
-                @if ($order->payment_status == 'paid')
+                @if ($order->payment_status == 'paid' && $order->status != 'cancelled')
 
                 <div class="flex flex-col items-center justify-center py-8 mx-auto md:h-screen lg:py-0">
                     <div
@@ -27,11 +27,11 @@
                         <div
                             class="mt-4 p-4 space-y-2 border border-gray-200 rounded-lg text-sm text-gray-700 dark:text-gray-300 dark:border-gray-600">
                             <div class="flex justify-between"><span class="font-medium">Nomor Pesanan:</span><span
-                                    class="font-mono">#{{ $order->id }}</span></div>
+                                    class="font-mono">#{{ $order->order_number }}</span></div>
                             <div class="flex justify-between"><span class="font-medium">Tanggal:</span><span>{{
                                     $order->created_at->format('d F Y') }}</span></div>
                             <div class="flex justify-between"><span class="font-medium">Metode
-                                    Pembayaran:</span><span class="font-semibold">{{
+                                    Pembayaran:</span><span class="font-semibold text-green-600">{{
                                     Str::upper($order->payment_method) }}</span></div>
                             <div class="flex justify-between pt-2 mt-2 border-t border-gray-200 dark:border-gray-600">
                                 <span class="text-base font-bold">Total:</span>
@@ -58,7 +58,8 @@
                     <!-- Order Details Card -->
                     <div class="bg-white rounded-lg border border-gray-200 dark:bg-gray-800 dark:border-gray-700">
                         <div class="px-6 py-4 border-b border-gray-200 dark:border-gray-700">
-                            <h4 class="text-lg font-semibold text-gray-800 dark:text-white">Detail Order #{{ $order->id
+                            <h4 class="text-lg font-semibold text-gray-800 dark:text-white">Detail Order #{{
+                                $order->order_number
                                 }}</h4>
                         </div>
                         <div class="p-6">
@@ -104,6 +105,51 @@
                             </div>
                         </div>
                     </div>
+                    @if ($order->status == 'cancelled')
+                    <div class="mt-6">
+                        <p class="text-sm text-red-600">Pesanan ini telah dibatalkan.</p>
+                        <a href="{{ route('my-account.index') }}"
+                            class="btn inline-flex w-full items-center justify-center gap-x-2 bg-gray-200 text-black border-gray-200 disabled:opacity-50 disabled:pointer-events-none hover:text-black hover:bg-gray-300 hover:border-gray-300 active:bg-gray-300 active:border-gray-300 focus:outline-none focus:ring-4 focus:ring-gray-200">
+                            Kembali ke Riwayat Pesanan
+                        </a>
+                    </div>
+                    @endif
+
+                    @if($order->payment_method == 'midtrans' && $order->status != 'cancelled')
+                    <div class="mt-6 bg-white rounded-lg shadow-md border border-gray-200 p-6">
+                        <h5 class="text-base font-semibold text-gray-900 mb-4">Opsi Pesanan</h5>
+                        <div class="flex flex-wrap items-center gap-4">
+
+                            {{-- Tombol "Bayar Sekarang dengan Midtrans" --}}
+                            {{-- Muncul jika metode bank & belum bayar, ATAU jika metode midtrans & belum bayar --}}
+                            @if(($order->payment_status != 'paid'))
+                            <button wire:click="payWithMidtrans" wire:loading.attr="disabled"
+                                class="btn inline-flex items-center gap-x-2 bg-green-600 text-white border-green-600 hover:bg-green-700">
+                                {{-- Tampilkan animasi loading saat proses pembayaran berlangsung --}}
+                                <span wire:loading.remove wire:target="payWithMidtrans">Ulangi Pembayaran</span>
+                                <span wire:loading wire:target="payWithMidtrans">Memproses...</span>
+                            </button>
+                            @endif
+
+                            {{-- Tombol "Batalkan Pesanan" --}}
+                            {{-- Muncul jika pesanan masih pending --}}
+                            @if($order->status == 'pending' && $order->payment_status == 'pending')
+                            <button wire:click="cancelOrder"
+                                wire:confirm="Apakah Anda yakin ingin membatalkan pesanan ini?"
+                                class="btn inline-flex items-center gap-x-2 bg-red-600 text-white border-red-600 hover:bg-red-700">
+                                Batalkan Pesanan
+                            </button>
+                            @endif
+
+                            <div class="flex-1 flex justify-end">
+                                <a href="{{ route('my-account.index') }}"
+                                    class="btn inline-flex items-center gap-x-2 bg-gray-200 text-black border-gray-200 disabled:opacity-50 disabled:pointer-events-none hover:text-black hover:bg-gray-300 hover:border-gray-300 active:bg-gray-300 active:border-gray-300 focus:outline-none focus:ring-4 focus:ring-gray-200">
+                                    Kembali
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    @endif
 
                     <!-- Payment Instructions & Upload Form -->
                     @if ($order->payment_method == 'bank')
@@ -118,7 +164,7 @@
                                     ',', '.')
                                     }}</strong> ke rekening berikut:</p>
                             <div
-                                class="p-4 my-4 text-blue-800 bg-blue-50 border border-blue-200 rounded-lg dark:bg-gray-700 dark:text-blue-300 dark:border-blue-600">
+                                class="p-4 my-4 text-blue-800 bg-green-50 border border-green-200 rounded-lg dark:bg-gray-700 dark:text-green-300 dark:border-green-600">
                                 <p><strong class="font-semibold">Bank BCA</strong></p>
                                 <p>Nomor Rekening: <strong class="font-mono">1234567890</strong></p>
                                 <p>Atas Nama: <strong class="font-semibold">PT E-Commerce Sejahtera</strong></p>
@@ -157,13 +203,25 @@
                                         }}</span> @enderror
                                 </div>
                                 <div class="flex items-center justify-between">
-                                    <!-- Tombol Unggah (Primary) -->
-                                    <button type="submit"
-                                        class="btn inline-flex items-center gap-x-2 bg-green-600 text-white border-green-600 disabled:opacity-50 disabled:pointer-events-none hover:text-white hover:bg-green-700 hover:border-green-700 active:bg-green-700 active:border-green-700 focus:outline-none focus:ring-4 focus:ring-green-300"
-                                        wire:loading.attr="disabled">
-                                        <span wire:loading.remove wire:target="uploadProof">Unggah Sekarang</span>
-                                        <span wire:loading wire:target="uploadProof">Mengunggah...</span>
-                                    </button>
+                                    <div class="flex flex-wrap items-center gap-4">
+                                        <!-- Tombol Unggah (Primary) -->
+                                        <button type="submit"
+                                            class="btn inline-flex items-center gap-x-2 bg-green-600 text-white border-green-600 disabled:opacity-50 disabled:pointer-events-none hover:text-white hover:bg-green-700 hover:border-green-700 active:bg-green-700 active:border-green-700 focus:outline-none focus:ring-4 focus:ring-green-300"
+                                            wire:loading.attr="disabled">
+                                            <span wire:loading.remove wire:target="uploadProof">Unggah Sekarang</span>
+                                            <span wire:loading wire:target="uploadProof">Memproses...</span>
+                                        </button>
+
+                                        {{-- Tampilkan tombol batalkan pesanan jika status masih pending --}}
+                                        @if($order->status == 'pending' && $order->payment_status == 'pending')
+                                        <button wire:click="cancelOrder"
+                                            wire:confirm="Apakah Anda yakin ingin membatalkan pesanan ini?"
+                                            class="btn inline-flex items-center gap-x-2 bg-red-600 text-white border-red-600 hover:bg-red-700">
+                                            Batalkan Pesanan
+                                        </button>
+                                        @endif
+                                    </div>
+
                                     <!-- Tombol Kembali (Secondary) -->
                                     <a href="{{ route('my-account.index') }}"
                                         class="btn inline-flex items-center gap-x-2 bg-gray-200 text-black border-gray-200 disabled:opacity-50 disabled:pointer-events-none hover:text-black hover:bg-gray-300 hover:border-gray-300 active:bg-gray-300 active:border-gray-300 focus:outline-none focus:ring-4 focus:ring-gray-200">

@@ -19,11 +19,14 @@
                             <a href="#" class="text-inherit">
                                 <h6>{{ $item['name'] }}</h6>
                             </a>
-                            {{-- Info tambahan seperti berat/varian bisa ditambahkan di sini jika ada datanya --}}
-                            {{-- <span><small class="text-gray-500">.98 / lb</small></span> --}}
+                            <div class="flex items-center text-sm text-gray-500 space-x-2">
+                                @if($item['variant_name'])
+                                <span>{{ $item['variant_name'] }}</span>
+                                {{-- Pemisah --}}
+                                <span>-</span>
+                                @endif
 
-                            {{-- Tombol Remove --}}
-                            <div class="mt-2 small leading-none">
+                                {{-- Tombol Remove --}}
                                 <a href="#!" wire:click.prevent="removeItem('{{ $productId }}')"
                                     class="text-green-600 flex items-center">
                                     <span class="mr-1 align-text-bottom">
@@ -42,6 +45,8 @@
                                     <span class="text-gray-500 text-sm">Hapus</span>
                                 </a>
                             </div>
+
+
                         </div>
                     </div>
                 </div>
