@@ -30,10 +30,11 @@ class ProductResource extends Resource
                             ->required()->maxLength(255)->live(onBlur: true)
                             ->afterStateUpdated(fn(Set $set, ?string $state) => $set('slug', Str::slug($state))),
 
-                        Forms\Components\TextInput::make('slug')
+                        Forms\Components\TextInput::make('slug')->label('Kode Unik')->readOnly(true)
                             ->required()->maxLength(255)->unique(Product::class, 'slug', ignoreRecord: true),
 
                         Forms\Components\MarkdownEditor::make('description')
+                            ->label('Deskripsi Produk')
                             ->columnSpanFull(),
                     ])->columns(2),
 
@@ -60,17 +61,18 @@ class ProductResource extends Resource
                             ->required(),
                     ]),
                     Forms\Components\Section::make('Gambar Utama')->schema([
-                        Forms\Components\FileUpload::make('image')
+                        Forms\Components\FileUpload::make('image')->label('')
                             ->image()
                             ->disk('public')
                             ->directory('products'),
                     ]),
                     Forms\Components\Section::make('Galeri Gambar')->schema([
-                        Forms\Components\FileUpload::make('images')
+                        Forms\Components\FileUpload::make('images')->label('')
                             ->multiple()
                             ->image()
                             ->maxFiles(3)
-                            ->directory('products'),
+                            ->directory('products')
+                            ->placeholder('Seret atau klik untuk mengunggah galeri gambar (maks. 3 file)'),
                     ]),
                 ])->columnSpan(1),
             ])->columns(3);

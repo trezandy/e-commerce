@@ -97,7 +97,7 @@ class ProductAndCategorySeeder extends Seeder
                 'image' => 'products/product-img-9.jpg'
             ],
             [
-                'name' => 'Amul Butter - 500g',
+                'name' => 'Amul Butter',
                 'category' => 'Dairy, Bread & Eggs',
                 'price' => 75000,
                 'image' => 'products/product-img-10.jpg'
